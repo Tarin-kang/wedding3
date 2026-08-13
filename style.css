@@ -209,20 +209,22 @@ body {
     font-weight: 400;
 }
 
-.open-card-btn {
+.open-card-btn,
+.capsule-pill-btn {
     position: relative !important;
     z-index: 1000000 !important;
     pointer-events: auto !important;
-    padding: 14px 34px;
-    background: linear-gradient(135deg, var(--primary-green), #778873);
+    padding: 14px 36px;
+    background: linear-gradient(135deg, var(--primary-green), #6b7d68);
     color: #ffffff;
     border: none;
     border-radius: 50px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 1px;
     cursor: pointer;
-    box-shadow: 0 6px 18px rgba(138, 154, 134, 0.35);
+    box-shadow: 0 0 0 0 rgba(138, 154, 134, 0.6);
+    animation: pulsingGlow 2s infinite;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-flex;
     align-items: center;
@@ -230,14 +232,22 @@ body {
     gap: 10px;
 }
 
-.open-card-btn:hover {
-    background: linear-gradient(135deg, #778873, var(--primary-green));
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 8px 24px rgba(138, 154, 134, 0.45);
+@keyframes pulsingGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(138, 154, 134, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 16px rgba(138, 154, 134, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(138, 154, 134, 0);
+    }
 }
 
-.open-card-btn:active {
-    transform: translateY(1px);
+.capsule-pill-btn:hover,
+.open-card-btn:hover {
+    background: linear-gradient(135deg, #6b7d68, var(--primary-green));
+    transform: translateY(-2px) scale(1.04);
 }
 
 .btn-icon {
@@ -312,11 +322,20 @@ body {
     padding: 30px 20px 40px;
 }
 
-.invite-quote {
-    font-family: 'Alex Brush', cursive;
-    font-size: 26px;
+.save-the-date-badge {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
     color: var(--gold-accent);
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.invite-quote {
+    font-size: 16px;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    font-weight: 400;
 }
 
 .header-names {
@@ -330,9 +349,9 @@ body {
 .header-th-names {
     font-family: 'Prompt', sans-serif;
     font-size: 16px;
-    color: var(--text-muted);
+    color: var(--text-dark);
     margin-bottom: 15px;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .header-divider {
@@ -354,6 +373,114 @@ body {
 .header-divider .diamond {
     color: var(--sandy-brown);
     font-size: 10px;
+}
+
+/* Pre-wedding Frame (#preweddingImg) */
+.prewedding-frame {
+    width: 240px;
+    height: 310px;
+    margin: 24px auto 0;
+    border-radius: 120px 120px 20px 20px;
+    overflow: hidden;
+    position: relative;
+    border: 4px solid var(--white);
+    box-shadow: 0 12px 32px rgba(74, 85, 72, 0.15);
+    background-color: #e8eee6;
+}
+
+.prewedding-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.prewedding-frame:hover .prewedding-img {
+    transform: scale(1.05);
+}
+
+.venue-address {
+    font-size: 13.5px;
+    color: var(--text-dark);
+    margin: 8px 0 14px;
+    line-height: 1.5;
+}
+
+.parking-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(210, 180, 140, 0.18);
+    color: #8c6838;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    border: 1px solid rgba(210, 180, 140, 0.4);
+}
+
+.dresscode-guest-hint {
+    font-size: 13.5px;
+    color: var(--primary-green);
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+/* Account Number & Copy Box */
+.account-copy-box {
+    margin-top: 20px;
+    background: var(--warm-bg);
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px dashed var(--soft-sage);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-info {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-green);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.copy-acc-btn {
+    background: var(--primary-green);
+    color: var(--white);
+    border: none;
+    padding: 8px 22px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.copy-acc-btn:hover {
+    background: #6b7d68;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(138, 154, 134, 0.25);
+}
+
+.copy-toast {
+    font-size: 12px;
+    color: var(--gold-accent);
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.copy-toast.show {
+    opacity: 1;
 }
 
 /* Section Card Container */
@@ -1018,90 +1145,112 @@ body {
     transform: translateY(0);
 }
 
-/* Running Cat with Wishes (น้องแมววิ่ง + ป๊อปอัพคำอวยพร) */
-.running-cat-container {
+/* ── Animated Running White Cat ── */
+.cat-character {
     position: fixed;
-    bottom: 12px;
-    left: -120px;
-    z-index: 9999;
+    bottom: 15px;
+    left: -90px;
+    z-index: 10001 !important;
     cursor: pointer;
+    animation: catRunAcross 22s linear infinite;
     user-select: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    pointer-events: auto;
-    animation: runAcrossScreen 16s linear infinite;
-    will-change: left, transform;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: transform .2s;
+    filter: drop-shadow(0 6px 12px rgba(43, 69, 51, 0.2));
 }
 
-@keyframes runAcrossScreen {
-    0% {
-        left: -120px;
-        transform: scaleX(1);
-    }
-    48% {
-        left: calc(100vw - 140px);
-        transform: scaleX(1);
-    }
-    50% {
-        left: calc(100vw - 140px);
-        transform: scaleX(-1);
-    }
-    98% {
-        left: -120px;
-        transform: scaleX(-1);
-    }
-    100% {
-        left: -120px;
-        transform: scaleX(1);
-    }
+.cat-character.paused,
+.cat-character.paused *,
+.cat-body-flip.paused,
+.cat-body-flip.paused * {
+    animation-play-state: paused !important;
 }
 
-.cat-speech-bubble {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    color: var(--text-dark);
-    border: 1.5px solid var(--primary-green);
-    border-radius: 18px;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-    position: relative;
-    margin-bottom: 6px;
-    animation: floatBubble 2s ease-in-out infinite alternate;
-    transition: opacity 0.4s ease;
+.cat-character.fast-speed,
+.cat-body-flip.fast-speed {
+    animation-duration: 8s !important;
 }
 
-.cat-speech-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -7px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 7px 6px 0;
-    border-style: solid;
-    border-color: var(--primary-green) transparent;
-    display: block;
-    width: 0;
+.cat-body-flip.jump-prep {
+    animation: catJumpPrep 0.45s ease-out !important;
 }
 
-@keyframes floatBubble {
-    from { transform: translateY(0); }
-    to { transform: translateY(-4px); }
+@keyframes catJumpPrep {
+    0% { transform: translateY(0) scale(1); }
+    35% { transform: translateY(6px) scale(1.15, 0.85); }
+    70% { transform: translateY(-40px) scale(0.9, 1.25); }
+    100% { transform: translateY(0) scale(1); }
 }
 
-.running-cat-sprite {
-    font-size: 38px;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
-    animation: catRunBounce 0.35s ease-in-out infinite alternate;
+.cat-character:hover {
+    transform: scale(1.15) translateY(-5px);
+}
+
+.cat-body-flip {
     display: inline-block;
+    animation: catBodyFlipAnim 22s linear infinite;
+    transform-origin: center center;
 }
 
-@keyframes catRunBounce {
-    0% { transform: translateY(0) rotate(-3deg); }
-    100% { transform: translateY(-6px) rotate(3deg); }
+.cat-bubble-wrap {
+    position: absolute;
+    top: -32px;
+    left: 10px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.cat-bubble {
+    background: #ffffff;
+    border: 1.5px solid #7a9a83;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-family: sans-serif;
+    font-size: .8rem;
+    font-weight: 500;
+    color: #4b6854;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    white-space: nowrap;
+    animation: catBubblePulse 2s ease-in-out infinite;
+    transform: scaleX(1) !important;
+}
+
+.cat-tail {
+    transform-origin: 15px 50px;
+    animation: catTailWag 1.5s ease-in-out infinite alternate;
+}
+
+.paw-1, .paw-3 { animation: catPawStep 0.4s ease-in-out infinite alternate; }
+.paw-2, .paw-4 { animation: catPawStep 0.4s ease-in-out infinite alternate-reverse; }
+
+@keyframes catRunAcross {
+    0%   { left: -90px; }
+    48%  { left: calc(100vw + 20px); }
+    50%  { left: calc(100vw + 20px); }
+    98%  { left: -90px; }
+    100% { left: -90px; }
+}
+
+@keyframes catBodyFlipAnim {
+    0%, 48%   { transform: scaleX(1); }
+    50%, 98%  { transform: scaleX(-1); }
+    100%      { transform: scaleX(1); }
+}
+
+@keyframes catTailWag {
+    0%   { transform: rotate(-8deg); }
+    100% { transform: rotate(15deg); }
+}
+
+@keyframes catPawStep {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-3px); }
+}
+
+@keyframes catBubblePulse {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
 }
 
 /* Responsive adjustments */
@@ -1133,9 +1282,11 @@ body {
         height: 38px;
     }
     
-    .cat-speech-bubble {
+    .cat-bubble {
         font-size: 11px;
         padding: 4px 10px;
     }
 }
+
+
 

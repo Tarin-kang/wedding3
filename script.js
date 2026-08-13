@@ -9,23 +9,29 @@
 // --------------------------------------------------------------------------
 var ytPlayer = null;
 var isMusicPlaying = false;
+var isUserPaused = false;
 
 function onYouTubeIframeAPIReady() {
     try {
-        ytPlayer = new YT.Player('youtube-player-iframe', {
+        ytPlayer = new YT.Player('youtube-player-div', {
+            height: '1',
+            width: '1',
+            videoId: 'QgaTQ5-XfMM',
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'disablekb': 1,
+                'fs': 0,
+                'loop': 1,
+                'playlist': 'QgaTQ5-XfMM', // Required by YouTube for infinite looping
+                'playsinline': 1,
+                'rel': 0,
+                'enablejsapi': 1
+            },
             events: {
-                'onReady': function() {
-                    console.log("YouTube Player is ready");
-                },
-                'onStateChange': function(event) {
-                    if (event.data === YT.PlayerState.PLAYING) {
-                        isMusicPlaying = true;
-                        updateMusicUI(true);
-                    } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                        isMusicPlaying = false;
-                        updateMusicUI(false);
-                    }
-                }
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange,
+                'onError': onPlayerError
             }
         });
     } catch(e) {
@@ -33,39 +39,73 @@ function onYouTubeIframeAPIReady() {
     }
 }
 
+function onPlayerReady(event) {
+    console.log("YouTube Player is ready");
+    if (ytPlayer && typeof ytPlayer.setVolume === 'function') {
+        ytPlayer.setVolume(100);
+    }
+}
+
+function onPlayerStateChange(event) {
+    // YT.PlayerState: ENDED (0), PLAYING (1), PAUSED (2), BUFFERING (3), CUED (5)
+    if (event.data === YT.PlayerState.PLAYING) {
+        isMusicPlaying = true;
+        updateMusicUI(true);
+    } else if (event.data === YT.PlayerState.ENDED) {
+        // If ended, replay automatically from beginning!
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            ytPlayer.seekTo(0);
+            ytPlayer.playVideo();
+        }
+    } else if (event.data === YT.PlayerState.PAUSED) {
+        // If unexpectedly paused (e.g. background throttling), auto-resume if user hasn't paused manually!
+        if (isMusicPlaying && !isUserPaused) {
+            setTimeout(function() {
+                if (isMusicPlaying && !isUserPaused && ytPlayer && typeof ytPlayer.playVideo === 'function') {
+                    ytPlayer.playVideo();
+                }
+            }, 500);
+        } else {
+            isMusicPlaying = false;
+            updateMusicUI(false);
+        }
+    }
+}
+
+function onPlayerError(event) {
+    console.log("YT Error code:", event.data);
+    if (isMusicPlaying && window.startAmbientSynth) {
+        window.startAmbientSynth();
+    }
+}
+
 window.playYouTubeMusic = function() {
+    isUserPaused = false;
     isMusicPlaying = true;
     updateMusicUI(true);
 
     if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
         try {
-            ytPlayer.playVideo();
             if (typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
+            if (typeof ytPlayer.setVolume === 'function') ytPlayer.setVolume(100);
+            ytPlayer.playVideo();
         } catch (e) {
-            console.log("YT Player API play fallback", e);
+            console.log("YT Player play error:", e);
         }
-    }
-    
-    // PostMessage fallback for Mobile (iOS Safari / Android Chrome / In-app browsers)
-    var iframe = document.getElementById('youtube-player-iframe');
-    if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
     }
 };
 
 window.toggleYouTubeMusic = function() {
     if (isMusicPlaying) {
+        isUserPaused = true;
         isMusicPlaying = false;
         updateMusicUI(false);
         if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
             try { ytPlayer.pauseVideo(); } catch(e) {}
         }
-        var iframe = document.getElementById('youtube-player-iframe');
-        if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-        }
+        if (window.stopAmbientSynth) window.stopAmbientSynth();
     } else {
+        isUserPaused = false;
         window.playYouTubeMusic();
     }
 };
@@ -149,33 +189,213 @@ document.addEventListener('DOMContentLoaded', function() {
     // 5. Load Guest Wishes
     // --------------------------------------------------------------------------
     loadWishes();
+
+    // --------------------------------------------------------------------------
+    // 6. Ambient Piano Fallback Setup
+    // --------------------------------------------------------------------------
+    setupAmbientSynth();
 });
 
 // --------------------------------------------------------------------------
-// Running Cat Wish Rotator Engine
+// 2. Animated Running White Cat Engine (น้องแมวขาว 🐱🤍)
 // --------------------------------------------------------------------------
 function initRunningCatWishes() {
-    const catWishes = [
+    const catCharacter = document.getElementById('catCharacter');
+    const catBubble = document.getElementById('catBubble');
+    const catBodyFlip = document.querySelector('.cat-body-flip');
+    
+    const catMessages = [
         "ยินดีกับพี่วรังค์และพี่ธารินทร์ด้วยนะคะ 💕",
         "ขอให้ครองรักกันยาวนาน 1000 ปี ✨",
         "มีความสุขมากๆ สมหวังในทุกเรื่องครับ 🎉",
         "ขอให้มีเบบี้ไวๆ น้าา 👶",
-        "เจ้าบ่าวเจ้าสาวน่ารักมากๆ ครับ 💖"
+        "เจ้าบ่าวเจ้าสาวน่ารักมากๆ ครับ 💖",
+        "Meow~ 🤍",
+        "ยินดีต้อนรับนะคะ! 🐾",
+        "ขอให้เป็นวันที่ดีค่ะ ✨",
+        "รักน้าา~ 💕"
     ];
 
-    let currentWishIndex = 0;
-    const bubbleEl = document.getElementById('cat-speech-bubble');
+    let catPauseTimer = null;
+    let catClickCount = 0;
+    let catFastTimer = null;
+    let lastCatInteractTime = 0;
+    let autoRotateInterval = null;
 
-    if (!bubbleEl) return;
+    if (catCharacter && catBubble) {
+        const handleCatInteract = (e) => {
+            if (e) {
+                if (e.cancelable) e.preventDefault();
+                e.stopPropagation();
+            }
 
-    setInterval(() => {
-        currentWishIndex = (currentWishIndex + 1) % catWishes.length;
-        bubbleEl.style.opacity = '0';
-        setTimeout(() => {
-            bubbleEl.innerText = catWishes[currentWishIndex];
-            bubbleEl.style.opacity = '1';
-        }, 400);
-    }, 4500);
+            const nowTime = Date.now();
+            if (nowTime - lastCatInteractTime < 220) return;
+            lastCatInteractTime = nowTime;
+
+            // 1. Play Meow Sounds (Synthesized Web Audio + Audio File Fallback)
+            playSynthesizedMeow();
+            if (window.playCatSound) window.playCatSound();
+
+            // 2. Count Clicks
+            catClickCount++;
+
+            // 3. Every 3 clicks -> Jump Prep + High Speed Sprint!
+            if (catClickCount % 3 === 0) {
+                catBubble.textContent = "ย่อตัวกระโดด... ซิ่งเลย! 💨🐱⚡";
+                catBubble.style.animation = 'none';
+                void catBubble.offsetWidth;
+                catBubble.style.animation = 'catBubblePulse 0.5s ease';
+
+                catCharacter.classList.remove('paused');
+                if (catBodyFlip) catBodyFlip.classList.remove('paused');
+                if (catBodyFlip) catBodyFlip.classList.add('jump-prep');
+                spawnCatHeartParticles(catCharacter);
+
+                setTimeout(() => {
+                    if (catBodyFlip) catBodyFlip.classList.remove('jump-prep');
+                    catCharacter.classList.add('fast-speed');
+                    if (catBodyFlip) catBodyFlip.classList.add('fast-speed');
+
+                    if (catFastTimer) clearTimeout(catFastTimer);
+                    catFastTimer = setTimeout(() => {
+                        catCharacter.classList.remove('fast-speed');
+                        if (catBodyFlip) catBodyFlip.classList.remove('fast-speed');
+                    }, 2500);
+                }, 450);
+
+                return;
+            }
+
+            // 4. Normal Click -> Pause 2.5s + Random Wish Speech
+            catCharacter.classList.add('paused');
+            if (catBodyFlip) catBodyFlip.classList.add('paused');
+
+            const randomMsg = catMessages[Math.floor(Math.random() * catMessages.length)];
+            catBubble.textContent = randomMsg;
+            catBubble.style.animation = 'none';
+            void catBubble.offsetWidth;
+            catBubble.style.animation = 'catBubblePulse 0.5s ease';
+
+            spawnCatHeartParticles(catCharacter);
+
+            if (catPauseTimer) clearTimeout(catPauseTimer);
+            catPauseTimer = setTimeout(() => {
+                catCharacter.classList.remove('paused');
+                if (catBodyFlip) catBodyFlip.classList.remove('paused');
+            }, 2500);
+        };
+
+        catCharacter.addEventListener('click', handleCatInteract);
+        catCharacter.addEventListener('touchstart', handleCatInteract, { passive: false });
+
+        // Auto rotate wishes when idling
+        let wishIndex = 0;
+        autoRotateInterval = setInterval(() => {
+            if (catCharacter.classList.contains('paused')) return;
+            wishIndex = (wishIndex + 1) % catMessages.length;
+            catBubble.style.opacity = '0';
+            setTimeout(() => {
+                catBubble.textContent = catMessages[wishIndex];
+                catBubble.style.opacity = '1';
+            }, 300);
+        }, 4500);
+    }
+}
+
+// Web Audio API Synthesized Meow Sound
+function playSynthesizedMeow() {
+    try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        const now = ctx.currentTime;
+        
+        // Cat Meow Pitch Envelope: 700Hz -> 1150Hz -> 450Hz
+        osc.frequency.setValueAtTime(700, now);
+        osc.frequency.exponentialRampToValueAtTime(1150, now + 0.15);
+        osc.frequency.exponentialRampToValueAtTime(450, now + 0.45);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.3, now + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.5);
+    } catch (e) {
+        console.log('Synth meow error:', e);
+    }
+}
+
+// Floating Heart & Star Particle Generator around Cat
+function spawnCatHeartParticles(el) {
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const particles = ['💖', '🐾', '✨', '🌸', '🤍'];
+    for (let i = 0; i < 5; i++) {
+        const p = document.createElement('span');
+        p.textContent = particles[Math.floor(Math.random() * particles.length)];
+        p.style.position = 'fixed';
+        p.style.left = (rect.left + 20 + Math.random() * 30) + 'px';
+        p.style.top = (rect.top - 10 + Math.random() * 20) + 'px';
+        p.style.fontSize = '1.2rem';
+        p.style.pointerEvents = 'none';
+        p.style.zIndex = '10002';
+        p.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+        document.body.appendChild(p);
+
+        requestAnimationFrame(() => {
+            p.style.transform = `translate(${(Math.random() - 0.5) * 60}px, -${40 + Math.random() * 40}px) scale(1.3)`;
+            p.style.opacity = '0';
+        });
+
+        setTimeout(() => p.remove(), 1000);
+    }
+}
+
+// --------------------------------------------------------------------------
+// Copy Account Number to Clipboard
+// --------------------------------------------------------------------------
+function copyAccountNo() {
+    const accEl = document.getElementById('accountNo');
+    const toast = document.getElementById('copyToast');
+
+    if (!accEl) return;
+    const textToCopy = accEl.innerText.replace(/-/g, '');
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            if (toast) {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }
+        }).catch(err => {
+            console.log('Copy failed:', err);
+        });
+    } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        if (toast) {
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    }
 }
 
 // --------------------------------------------------------------------------
@@ -389,4 +609,54 @@ function initFallingPetals() {
     }
 
     animatePetals();
+}
+
+// --------------------------------------------------------------------------
+// Ambient Piano Audio Fallback Engine
+// --------------------------------------------------------------------------
+let synthCtx = null;
+let synthInterval = null;
+
+function setupAmbientSynth() {
+    window.startAmbientSynth = function() {
+        if (!synthCtx) {
+            synthCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (synthCtx.state === 'suspended') {
+            synthCtx.resume();
+        }
+        if (synthInterval) clearInterval(synthInterval);
+
+        const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 392.00];
+        let idx = 0;
+
+        synthInterval = setInterval(() => {
+            if (!isMusicPlaying || isUserPaused) return;
+            playPianoTone(notes[idx % notes.length]);
+            idx++;
+        }, 1100);
+    };
+
+    window.stopAmbientSynth = function() {
+        if (synthInterval) clearInterval(synthInterval);
+    };
+
+    function playPianoTone(freq) {
+        if (!synthCtx) return;
+        const osc = synthCtx.createOscillator();
+        const gain = synthCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, synthCtx.currentTime);
+
+        gain.gain.setValueAtTime(0, synthCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.06, synthCtx.currentTime + 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.0001, synthCtx.currentTime + 2.4);
+
+        osc.connect(gain);
+        gain.connect(synthCtx.destination);
+
+        osc.start();
+        osc.stop(synthCtx.currentTime + 2.5);
+    }
 }
