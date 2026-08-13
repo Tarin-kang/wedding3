@@ -9,46 +9,79 @@
     padding: 0;
 }
 
+/* ── Sage Green & Sandy Brown Wedding Palette ── */
 :root {
-    --primary-green: #8a9a86;
-    --soft-sage: #b5c0b3;
-    --olive-mist: #a3b19b;
-    --eucalyptus: #c8d3c5;
-    --sandy-brown: #d2b48c;
-    --warm-bg: #f7f9f6;
-    --text-dark: #4a5548;
-    --text-muted: #6b7769;
-    --gold-accent: #c5a059;
-    --white: #ffffff;
-    --shadow-soft: 0 10px 30px rgba(138, 154, 134, 0.12);
-    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
-    --radius-lg: 20px;
-    --radius-md: 12px;
+    /* โทนสีหลัก (Primary Colors) */
+    --accent:       #7a9a83; /* เขียวเซจหลัก */
+    --accent-dark:  #4b6854; /* เขียวป่าลึก */
+    --accent-l:     #d5e4d9; /* เขียวเซจพาสเทล */
+    --sage-light:   #eaf2ec; /* เขียวเซจอ่อน */
+
+    /* โทนสีน้ำตาลและเบจ (Warm Colors) */
+    --sandy-brown:  #c89d7c; /* น้ำตาลทรายอบอุ่น */
+    --sandy-light:  #f5eae0; /* ครีมเบจอ่อน */
+    --bg-warm:      #ebeee9; /* ออฟไวท์อบอุ่น */
+    --bg-card:      #ffffff; /* ขาวบริสุทธิ์ */
+
+    /* โทนสีตัวอักษร (Text & Border) */
+    --ink:          #152419; /* เขียวเข้มจัด (ตัวอักษรหลัก) */
+    --ink-soft:     #354b3c; /* เขียวเข้มนุ่ม (ตัวอักษรรอง) */
+    --ink-mute:     #697f70; /* เขียวเทา (ข้อความเชิงอธิบาย) */
+    --border:       #d4e2d8; /* สีเส้นขอบ */
+
+    /* ไล่เฉดสีพิเศษ (Gradients) */
+    --grad-cover:   radial-gradient(circle at 50% 35%, #f4faf6 0%, #d5e9dc 50%, #8ca995 100%);
+    --grad-button:  linear-gradient(135deg, #4b6854 0%, #344c3c 100%);
+    --grad-gold:    linear-gradient(135deg, #ffe259 0%, #ffa751 100%);
+
+    /* Alias Mapping */
+    --primary-green: var(--accent);
+    --soft-sage:     var(--accent-l);
+    --olive-mist:    #9bb1a0;
+    --eucalyptus:    #b9cfc0;
+    --warm-bg:       var(--bg-warm);
+    --text-dark:     var(--ink);
+    --text-muted:    var(--ink-mute);
+    --gold-accent:   #d4af37;
+    --white:         var(--bg-card);
+    --shadow-soft:   0 10px 30px rgba(75, 104, 84, 0.14);
+    --shadow-card:   0 4px 20px rgba(21, 36, 25, 0.05);
+    --radius-lg:     20px;
+    --radius-md:     12px;
 }
 
 html {
     scroll-behavior: smooth;
 }
 
+/* ── Botanical Pattern & Light Ambient Background ── */
 body {
-    font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--warm-bg);
-    color: var(--text-dark);
+    font-family: 'Prompt', 'Mitr', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f4f7f4; /* สีพื้นหลังหลัก Off-White Sage */
+    background-image: 
+        /* แสงออร่าทรงกลมมุมซ้ายบนและขวาล่าง */
+        radial-gradient(circle at 10% 20%, rgba(122, 154, 131, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(75, 104, 84, 0.12) 0%, transparent 45%),
+        /* ลวดลายใบไม้สีเขียวพาสเทลแบบ Seamless SVG Vector */
+        url("data:image/svg+xml,%3Csvg width='140' height='140' viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%237a9a83' fill-opacity='0.16'%3E%3Cpath d='M35 20c-8 0-15 10-12 20 3 10 15 15 22 10 8-5 5-20-10-30zm0 3c10 8 13 18 8 22-5 4-15-1-18-9-1-7 5-13 10-13zM105 90c-8 0-15 10-12 20 3 10 15 15 22 10 8-5 5-20-10-30zm0 3c10 8 13 18 8 22-5 4-15-1-18-9-1-7 5-13 10-13z'/%3E%3Cpath d='M70 50c-15-5-25 3-28 13-3 10 5 20 18 20 13 0 20-13 18-23-3-5-4-9-8-10zm-1 4c4 1 5 5 6 9-1 8-8 16-16 16-9 0-14-8-13-15 1-8 9-13 23-10z'/%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-repeat: repeat;
+    background-size: auto, auto, 150px 150px;
+    background-attachment: fixed;
+    color: #152419;
     line-height: 1.6;
     overflow: hidden; /* ล็อกการ Scroll ไว้จนกว่าจะเปิดการ์ด */
     position: relative;
     min-height: 100vh;
 }
 
-/* Background Canvas for Falling Petals */
-#petals-canvas {
+.petals-canvas {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
-    z-index: 1;
+    z-index: 99;
 }
 
 /* Cover Overlay */
@@ -285,21 +318,27 @@ body {
     font-weight: 400;
 }
 
-.header-names {
-    font-family: 'Charm', cursive;
-    font-size: 38px;
-    font-weight: 700;
+.header-names-cursive {
+    font-family: 'Alex Brush', 'Charm', cursive;
+    font-size: 52px;
     color: var(--primary-green);
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+    line-height: 1.15;
+    margin: 14px 0 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.header-th-names {
-    font-family: 'Prompt', sans-serif;
-    font-size: 16px;
-    color: var(--text-dark);
-    margin-bottom: 15px;
-    font-weight: 500;
+.header-names-cursive .name-line {
+    font-family: 'Alex Brush', 'Charm', cursive;
+    font-size: 52px;
+}
+
+.header-names-cursive .ampersand-line {
+    font-family: 'Alex Brush', 'Charm', cursive;
+    font-size: 38px;
+    color: var(--sandy-brown);
+    margin: 2px 0;
 }
 
 .header-divider {
@@ -473,19 +512,115 @@ body {
     font-size: 18px;
 }
 
-.section h2 {
+/* ── Schedule / Timeline Section ── */
+.schedule-section {
+    padding: 2.5rem 1rem;
+    max-width: 680px;
+    margin: 0 auto 24px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 1.8rem;
+}
+
+.section-label {
     font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    color: var(--primary-green);
-    margin-bottom: 6px;
-    letter-spacing: 1.5px;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    color: #7a9a83;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+}
+
+.section-title {
+    font-family: 'Prompt', 'Mitr', sans-serif;
+    font-size: 1.85rem;
     font-weight: 600;
+    color: #2b4533;
+    margin-bottom: 0.4rem;
 }
 
 .section-sub {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 22px;
+    font-family: 'Prompt', sans-serif;
+    font-size: 1.05rem;
+    color: #4b6854;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+/* กรอบการ์ด Timeline */
+.hz-timeline-wrap {
+    background: #ffffff;
+    border: 1px solid #d4e2d8;
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(21, 36, 25, 0.08);
+    position: relative;
+}
+
+/* รายการขั้นตอนพิธีการ */
+.hz-timeline-nodes {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.hz-node {
+    text-align: center;
+    flex: 1;
+    padding: 0 0.4rem;
+}
+
+.node-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.4rem;
+}
+
+.node-time {
+    font-family: 'Prompt', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #c89d7c;
+    line-height: 1.2;
+}
+
+.node-title {
+    font-family: 'Prompt', sans-serif;
+    font-size: 1rem;
+    color: #4b6854;
+    font-weight: 500;
+    margin-top: 0.2rem;
+}
+
+/* เส้นแกลน Timeline และจุดเชื่อมดอท */
+.hz-timeline-line {
+    height: 2px;
+    background: #eaf2ec;
+    position: relative;
+    margin: 1.2rem 1rem 0.8rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.hz-timeline-line .dot {
+    width: 14px;
+    height: 14px;
+    background: #c89d7c;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 2px #7a9a83;
+}
+
+/* การปรับขนาดบนมือถือ (Responsive) */
+@media (max-width: 480px) {
+    .node-icon { font-size: 1.8rem; }
+    .node-time { font-size: 1.1rem; }
+    .node-title { font-size: 0.82rem; }
 }
 
 /* Couple Cards */
@@ -928,6 +1063,7 @@ body {
 }
 
 .form-group input,
+.form-group select,
 .form-group textarea {
     width: 100%;
     padding: 12px 16px;
@@ -941,10 +1077,32 @@ body {
     transition: border-color 0.3s ease;
 }
 
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234a5548%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px top 50%;
+    background-size: 10px auto;
+}
+
 .form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
     border-color: var(--primary-green);
-    background: #ffffff;
+    background-color: #ffffff;
+}
+
+.wish-guest-count-badge {
+    display: inline-block;
+    font-size: 11px;
+    background: rgba(138, 154, 134, 0.15);
+    color: var(--primary-green);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    font-weight: 500;
 }
 
 .submit-wish-btn {
@@ -980,27 +1138,28 @@ body {
 
 .wish-card {
     background: var(--warm-bg);
-    padding: 12px 16px;
+    padding: 14px 16px;
     border-radius: 12px;
-    border-left: 3.5px solid var(--primary-green);
+    border-left: 4px solid var(--primary-green);
 }
 
 .wish-author {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--primary-green);
 }
 
 .wish-text {
-    font-size: 13px;
+    font-size: 14.5px;
     color: var(--text-dark);
-    margin-top: 4px;
+    margin-top: 6px;
+    line-height: 1.5;
 }
 
 .wish-time {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text-muted);
-    margin-top: 4px;
+    margin-top: 6px;
     text-align: right;
 }
 

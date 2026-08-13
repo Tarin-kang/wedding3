@@ -473,9 +473,9 @@ function addToCalendar() {
 // Best Wishes / Interactive Guestbook System
 // --------------------------------------------------------------------------
 const defaultWishes = [
-    { name: "คุณแม่เจ๊ชิง & เฮียฟู่", text: "ยินดีกับลูกๆ ทั้งสองคนมากๆ ขอให้ครองคู่กันด้วยความรัก ความเข้าใจ และมีความสุขตลอดไปจ้า", time: "14 ส.ค. 2026" },
-    { name: "เพื่อนเจ้าสาว", text: "กรี๊ดดดด ยินดีด้วยนะแป้ง&ธารินทร์! เจ้าสาวสวยมากกกก ตื่นเต้นวันงานแล้ว!", time: "14 ส.ค. 2026" },
-    { name: "กลุ่มเพื่อน ม.ปลาย", text: "ขอให้ทั้งคู่มีความสุขมากๆ ครองรักกันยั่งยืนมีตัวเล็กไวๆ น้า!", time: "14 ส.ค. 2026" }
+    { name: "คุณแม่เจ๊ชิง & เฮียฟู่", count: "2 ท่าน", text: "ยินดีกับลูกๆ ทั้งสองคนมากๆ ขอให้ครองคู่กันด้วยความรัก ความเข้าใจ และมีความสุขตลอดไปจ้า", time: "14 ส.ค. 2026" },
+    { name: "เพื่อนเจ้าสาว", count: "1 ท่าน", text: "กรี๊ดดดด ยินดีด้วยนะแป้ง&ธารินทร์! เจ้าสาวสวยมากกกก ตื่นเต้นวันงานแล้ว!", time: "14 ส.ค. 2026" },
+    { name: "กลุ่มเพื่อน ม.ปลาย", count: "4 ท่าน", text: "ขอให้ทั้งคู่มีความสุขมากๆ ครองรักกันยั่งยืนมีตัวเล็กไวๆ น้า!", time: "14 ส.ค. 2026" }
 ];
 
 function loadWishes() {
@@ -487,7 +487,10 @@ function loadWishes() {
 
     container.innerHTML = list.map(item => `
         <div class="wish-card">
-            <div class="wish-author"><i class="fas fa-user-circle"></i> ${escapeHtml(item.name)}</div>
+            <div class="wish-author">
+                <i class="fas fa-user-circle"></i> ${escapeHtml(item.name)}
+                ${item.count ? `<span class="wish-guest-count-badge">👥 ${escapeHtml(item.count)}</span>` : ''}
+            </div>
             <div class="wish-text">${escapeHtml(item.text)}</div>
             <div class="wish-time">${item.time}</div>
         </div>
@@ -497,11 +500,13 @@ function loadWishes() {
 function submitWish(event) {
     event.preventDefault();
     const nameInput = document.getElementById('guest-name');
+    const countInput = document.getElementById('guest-count');
     const msgInput = document.getElementById('guest-message');
 
     if (!nameInput || !msgInput) return;
 
     const name = nameInput.value.trim();
+    const count = countInput ? countInput.value : '';
     const message = msgInput.value.trim();
 
     if (!name || !message) return;
@@ -511,12 +516,13 @@ function submitWish(event) {
     let stored = localStorage.getItem('wt_wedding_wishes');
     let list = stored ? JSON.parse(stored) : [...defaultWishes];
 
-    list.unshift({ name: name, text: message, time: nowStr });
+    list.unshift({ name: name, count: count, text: message, time: nowStr });
     localStorage.setItem('wt_wedding_wishes', JSON.stringify(list));
 
     loadWishes();
 
     nameInput.value = '';
+    if (countInput) countInput.selectedIndex = 0;
     msgInput.value = '';
 
     if (window.confetti) {
@@ -572,65 +578,68 @@ function initScrollReveal() {
 // --------------------------------------------------------------------------
 // Falling Petals Canvas Engine
 // --------------------------------------------------------------------------
+// 3. Falling Petals Canvas Effect
+// --------------------------------------------------------------------------
 function initFallingPetals() {
-    const canvas = document.getElementById('petals-canvas');
+    const canvas = document.getElementById('petalsCanvas') || document.getElementById('petals-canvas');
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    });
-
-    const petalColors = ['rgba(138, 154, 134, 0.4)', 'rgba(181, 192, 179, 0.4)', 'rgba(210, 180, 140, 0.4)', 'rgba(200, 211, 197, 0.5)'];
-    const petals = [];
-    const petalCount = 20;
-
-    for (let i = 0; i < petalCount; i++) {
-        petals.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            size: Math.random() * 8 + 6,
-            speedY: Math.random() * 0.8 + 0.3,
-            speedX: Math.random() * 0.6 - 0.3,
-            rotation: Math.random() * 360,
-            rotSpeed: Math.random() * 1 - 0.5,
-            color: petalColors[Math.floor(Math.random() * petalColors.length)]
-        });
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
-
-    function animatePetals() {
-        ctx.clearRect(0, 0, width, height);
-
-        petals.forEach(p => {
-            p.y += p.speedY;
-            p.x += p.speedX;
-            p.rotation += p.rotSpeed;
-
-            if (p.y > height) {
-                p.y = -10;
-                p.x = Math.random() * width;
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    let petals = [];
+    let animationFrameId = null;
+    class Petal {
+        constructor() {
+            this.reset();
+        }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * -canvas.height;
+            this.size = Math.random() * 8 + 6;
+            this.speedY = Math.random() * 1.2 + 0.6;
+            this.speedX = Math.random() * 0.6 - 0.3;
+            this.rotation = Math.random() * 360;
+            this.rotSpeed = Math.random() * 1.5 - 0.75;
+            this.opacity = Math.random() * 0.5 + 0.3;
+        }
+        update() {
+            this.y += this.speedY;
+            this.x += Math.sin(this.y * 0.01) + this.speedX;
+            this.rotation += this.rotSpeed;
+            if (this.y > canvas.height + 20) {
+                this.reset();
             }
-            if (p.x > width) p.x = 0;
-            if (p.x < 0) p.x = width;
-
+        }
+        draw() {
             ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate((p.rotation * Math.PI) / 180);
-            ctx.fillStyle = p.color;
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+            ctx.globalAlpha = this.opacity;
+            ctx.fillStyle = '#9caf88'; // สีกลีบดอกไม้เขียวเซจอ่อน
             ctx.beginPath();
-            ctx.ellipse(0, 0, p.size, p.size / 2, 0, 0, Math.PI * 2);
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(-this.size, -this.size / 2, -this.size, this.size, 0, this.size * 1.5);
+            ctx.bezierCurveTo(this.size, this.size, this.size, -this.size / 2, 0, 0);
             ctx.fill();
             ctx.restore();
-        });
-
-        requestAnimationFrame(animatePetals);
+        }
     }
-
-    animatePetals();
+    // สร้างกลีบดอกไม้ 28 กลีบ
+    petals = Array.from({ length: 28 }, () => new Petal());
+    function renderPetals() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        petals.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        animationFrameId = requestAnimationFrame(renderPetals);
+    }
+    
+    renderPetals(); // เริ่มทำงานอนิเมชันกลีบดอกไม้ลอยล่อง
 }
 
 // --------------------------------------------------------------------------

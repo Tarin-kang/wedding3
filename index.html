@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Warangkana & Tarin Wedding Invitation</title>
-    <meta name="description" content="ขอเรียนเชิญร่วมเป็นเกียรติในงานมงคลสมรส ระหว่าง วรางคณา วิทยปรีชากุล & ธารินทร์ ปัญญา วันเสาร์ที่ 12 ธันวาคม พ.ศ. 2569 ณ โกดังเจ๊ชิง & เฮียฟู่">
+    <meta name="description" content="ขอเรียนเชิญร่วมเป็นเกียรติในงานมงคลสมรส ระหว่าง Warangkana & Tarin วันเสาร์ที่ 12 ธันวาคม พ.ศ. 2569 ณ โกดังเจ๊ชิง & เฮียฟู่">
     
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Warangkana & Tarin Wedding Invitation">
-    <meta property="og:description" content="12.12.2026 - SAVE THE DATE ขอเรียนเชิญร่วมเป็นเกียรติในงานมงคลสมรส วรางคณา & ธารินทร์">
+    <meta property="og:description" content="12.12.2026 - SAVE THE DATE ขอเรียนเชิญร่วมเป็นเกียรติในงานมงคลสมรส Warangkana & Tarin">
     <meta property="og:image" content="images/cover.jpg">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Modern, Friendly, Non-Formal Readability) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Prompt:wght@300;400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Charm:wght@400;700&family=Mitr:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,22 +23,22 @@
 </head>
 <body>
 
-    <!-- Falling Petals Canvas -->
-    <canvas id="petals-canvas"></canvas>
+    <!-- Canvas สำหรับวาดกลีบดอกไม้ร่วงลอย -->
+    <canvas id="petalsCanvas" class="petals-canvas"></canvas>
 
     <!-- Hidden YouTube Audio Player Container -->
     <div id="youtube-player-container" style="position: fixed; width: 1px; height: 1px; left: -9999px; top: -9999px; overflow: hidden; opacity: 0; pointer-events: none;">
         <div id="youtube-player-div"></div>
     </div>
 
-    <!-- 🏛️ 1. Cover Overlay / หน้าปกการ์ดแต่งงานแบบซองจดหมายซุ้มโค้ง -->
+    <!-- Cover Overlay / หน้าปกการ์ดแต่งงาน -->
     <div id="cover-overlay" class="cover-overlay" onclick="openWeddingCard()" ontouchstart="openWeddingCard()">
         <div class="cover-card" onclick="event.stopPropagation()">
             
             <!-- ข้อความต้อนรับด้านบน -->
             <p class="subtitle">YOU ARE INVITED TO THE WEDDING OF</p>
             
-            <!-- ชื่อเจ้าสาว & เจ้าบ่าว (Font 'Charm') -->
+            <!-- ชื่อเจ้าสาว & เจ้าบ่าว -->
             <h1 class="couple-title">Warangkana &amp; Tarin</h1>
             
             <!-- ซุ้มโค้งแสดงภาพหน้าปก / โลโก้ WT -->
@@ -76,17 +76,20 @@
             <p class="save-the-date-badge">SAVE THE DATE</p>
             <p class="invite-quote">ขอเรียนเชิญร่วมเป็นเกียรติในงานมงคลสมรส</p>
             
-            <!-- ชื่อบ่าวสาว Font 'Charm' -->
-            <h1 class="header-names">Warangkana & Tarin</h1>
-            <h2 class="header-th-names">วรางคณา วิทยปรีชากุล & ธารินทร์ ปัญญา</h2>
+            <!-- ชื่อภาษาอังกฤษสไตล์ตัวเขียน (Stacked Cursive Script Style) -->
+            <h1 class="header-names-cursive">
+                <span class="name-line">Warangkana</span>
+                <span class="ampersand-line">&amp;</span>
+                <span class="name-line">Tarin</span>
+            </h1>
             
             <div class="header-divider">
                 <span class="diamond">◆</span>
             </div>
 
-            <!-- ภาพวาดสีน้ำคู่แต่งงานเต้นรำ (#preweddingImg) ในกรอบซุ้มพฤกษา -->
+            <!-- รูปภาพคู่แต่งงานจาก folder images (images/couple.jpg) -->
             <div class="prewedding-frame">
-                <img id="preweddingImg" src="images/couple.jpg" alt="วรางคณา & ธารินทร์ Pre-wedding" class="prewedding-img" onerror="this.src='images/ภาพแรก.jpg'">
+                <img id="preweddingImg" src="images/couple.jpg" alt="Warangkana & Tarin Couple" class="prewedding-img" onerror="this.src='images/ภาพแรก.jpg'">
                 <div class="floral-frame-overlay"></div>
             </div>
         </header>
@@ -126,47 +129,44 @@
             </div>
         </section>
 
-        <!-- Section: Schedule / Timeline (พร้อมข้อความเกริ่นนำเรียนเชิญแขกผู้มีเกียรติ) -->
-        <section class="section timeline-section fade-in">
-            <div class="section-card">
-                <div class="section-icon"><i class="fas fa-glass-cheers"></i></div>
-                <h2>EVENT SCHEDULE</h2>
-                <p class="timeline-intro-text">มีความยินดีเป็นอย่างยิ่ง ขอเรียนเชิญแขกผู้มีเกียรติร่วมเป็นส่วนหนึ่งในวันแห่งความสุขของเราสองคน</p>
-                <p class="section-sub">กำหนดการวันเสาร์ที่ 12 ธันวาคม พ.ศ. 2569</p>
-                
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="time-badge"><i class="far fa-clock"></i> 15:00 น.</div>
-                        <div class="timeline-content">
-                            <div class="icon-circle"><i class="fas fa-hands-praying"></i></div>
-                            <div class="desc-box">
-                                <h3>พิธีเจริญพระพุทธมนต์ & พิธีหมั้น</h3>
-                                <p>พิธีสงฆ์ สวดเจริญพระพุทธมนต์ และพิธีหมั้นตามประเพณี</p>
-                            </div>
-                        </div>
+        <!-- Schedule / Agenda Timeline Section (ส่วนกำหนดการพิธีการ) -->
+        <section class="section schedule-section fade-in">
+            <div class="section-header text-center">
+                <p class="section-label">TIMELINE</p>
+                <h2 class="section-title">กำหนดการพิธีมงคลสมรส</h2>
+                <p class="section-sub">วันเสาร์ที่ 12 ธันวาคม พ.ศ. 2569</p>
+            </div>
+
+            <!-- กรอบ Timeline แสดงขั้นตอนพิธีการ -->
+            <div class="hz-timeline-wrap">
+                <div class="hz-timeline-nodes">
+                    <!-- ขั้นตอนที่ 1: พิธีสวมแหวนหมั้น -->
+                    <div class="hz-node">
+                        <div class="node-icon">💍</div>
+                        <div class="node-time">15:00 น.</div>
+                        <div class="node-title">พิธีสวมแหวนหมั้น</div>
                     </div>
-                    
-                    <div class="timeline-item">
-                        <div class="time-badge"><i class="far fa-clock"></i> 16:00 น.</div>
-                        <div class="timeline-content">
-                            <div class="icon-circle"><i class="fas fa-hand-holding-water"></i></div>
-                            <div class="desc-box">
-                                <h3>พิธีรดน้ำสังข์</h3>
-                                <p>พิธีหลั่งน้ำพระพุทธมนต์และประสาทพรแก่คู่บ่าวสาว</p>
-                            </div>
-                        </div>
+
+                    <!-- ขั้นตอนที่ 2: พิธีรดน้ำสังข์ -->
+                    <div class="hz-node">
+                        <div class="node-icon">🐚</div>
+                        <div class="node-time">16:00 น.</div>
+                        <div class="node-title">พิธีรดน้ำสังข์</div>
                     </div>
-                    
-                    <div class="timeline-item">
-                        <div class="time-badge"><i class="far fa-clock"></i> 17:00 น.</div>
-                        <div class="timeline-content">
-                            <div class="icon-circle"><i class="fas fa-wine-glass-alt"></i></div>
-                            <div class="desc-box">
-                                <h3>ฉลองมงคลสมรส (Chalong)</h3>
-                                <p>ร่วมรับประทานอาหาร สังสรรค์ และฉลองความรักอย่างเป็นกันเอง</p>
-                            </div>
-                        </div>
+
+                    <!-- ขั้นตอนที่ 3: ร่วมรับประทานอาหาร -->
+                    <div class="hz-node">
+                        <div class="node-icon">🍽️</div>
+                        <div class="node-time">17:00 น.</div>
+                        <div class="node-title">ร่วมรับประทานอาหาร</div>
                     </div>
+                </div>
+
+                <!-- เส้นเชื่อมต่อ Timeline พร้อมจุดไข่ปลา -->
+                <div class="hz-timeline-line">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
                 </div>
             </div>
         </section>
@@ -199,8 +199,8 @@
             <div class="section-card">
                 <div class="section-icon"><i class="fas fa-palette"></i></div>
                 <h2>DRESS CODE</h2>
-                <p class="sub-desc">Earth Tone & Natural Palette</p>
-                <p class="dresscode-guest-hint">"ขอเชิญชวนแขกผู้มีเกียรติร่วมแต่งกายในโทนสี Sage Green & Sandy Brown 🤎"</p>
+                <p class="sub-desc">Sage Green & Natural Earth Palette</p>
+                <p class="dresscode-guest-hint">"ขอเชิญชวนแขกผู้มีเกียรติร่วมแต่งกายในโทนสี Sage Green & Natural Earth Tones 🌿"</p>
                 
                 <div class="color-swatches">
                     <div class="swatch" style="background-color: #8A9A86;" data-name="Sage Green (เขียวเซจมินิมอล)" data-hex="#8A9A86" onclick="selectSwatch(this)">
@@ -263,6 +263,16 @@
                 <form id="wish-form" class="wish-form" onsubmit="submitWish(event)">
                     <div class="form-group">
                         <input type="text" id="guest-name" placeholder="ชื่อของคุณ (Your Name)" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="guest-count" class="guest-count-select" required>
+                            <option value="" disabled selected>👥 จำนวนแขกที่มาร่วมงาน (Number of Guests)</option>
+                            <option value="1 ท่าน">1 ท่าน (1 Person)</option>
+                            <option value="2 ท่าน">2 ท่าน (2 Persons)</option>
+                            <option value="3 ท่าน">3 ท่าน (3 Persons)</option>
+                            <option value="4 ท่าน">4 ท่าน (4 Persons)</option>
+                            <option value="5 ท่านขึ้นไป">5 ท่านขึ้นไป (5+ Persons)</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <textarea id="guest-message" rows="3" placeholder="เขียนคำอวยพรต้อนรับบ่าวสาว..." required></textarea>
