@@ -94,20 +94,13 @@ window.playYouTubeMusic = function() {
         }
     }
 window.openWeddingCard = function() {
-    document.body.style.overflow = 'auto';
-    document.body.classList.add('card-opened');
-
     var overlay = document.getElementById('cover-overlay');
     if (overlay) {
+        overlay.style.display = 'none';
         overlay.classList.add('opened');
-        overlay.style.transform = 'translateY(-100%)';
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        
-        setTimeout(function() {
-            overlay.style.display = 'none';
-        }, 500);
     }
+    document.body.style.overflow = 'auto';
+    document.body.classList.add('card-opened');
 
     var controlBar = document.getElementById('audio-control-bar');
     if (controlBar) controlBar.classList.remove('hidden');
