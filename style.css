@@ -244,6 +244,13 @@ body {
     font-size: 16px;
 }
 
+.music-hint-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 12px;
+    opacity: 0.85;
+}
+
 /* Audio Control Floating Bar */
 .audio-control-bar {
     position: fixed;

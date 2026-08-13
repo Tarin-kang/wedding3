@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Warangkana & Tarin Wedding Invitation</title>
     <meta name="description" content="ขอเชิญร่วมงานมงคลสมรส ระหว่าง วรังคณา & ธารินทร์ วันเสาร์ที่ 12 ธันวาคม 2026 ณ โกดังเจ๊ชิง & เฮียฟู่">
     
@@ -26,9 +26,13 @@
     <!-- Falling Petals Canvas -->
     <canvas id="petals-canvas"></canvas>
 
-    <!-- Hidden YouTube Audio Player (A Thousand Years - The Piano Guys) -->
-    <div id="youtube-player-container" style="position: absolute; width: 1px; height: 1px; left: -9999px; overflow: hidden;">
-        <div id="youtube-player"></div>
+    <!-- Hidden Fail-Safe YouTube Audio Player (Compatible with iOS / Android / Desktop) -->
+    <div id="youtube-player-container" style="position: fixed; width: 1px; height: 1px; left: -9999px; top: -9999px; overflow: hidden; opacity: 0; pointer-events: none;">
+        <iframe id="youtube-player-iframe" 
+            src="https://www.youtube.com/embed/QgaTQ5-XfMM?enablejsapi=1&autoplay=0&loop=1&playlist=QgaTQ5-XfMM&playsinline=1&controls=0&origin=*" 
+            allow="autoplay; encrypted-media" 
+            style="width: 1px; height: 1px; border: none;">
+        </iframe>
     </div>
 
     <!-- Cover Overlay / หน้าปกการ์ด -->
@@ -52,16 +56,17 @@
 
             <button type="button" class="open-card-btn" onclick="openWeddingCard()" ontouchstart="openWeddingCard()">
                 <span>เปิดการ์ด OPEN INVITATION</span>
-                <i class="fas fa-envelope-open-text btn-icon"></i>
+                <i class="fas fa-music btn-icon"></i>
             </button>
+            <p class="music-hint-text">🎵 แตะเปิดการ์ดเพื่อรับฟังเพลงบรรเลง (A Thousand Years)</p>
         </div>
     </div>
 
     <!-- Sticky Audio Controls Bar -->
     <div class="audio-control-bar hidden" id="audio-control-bar">
-        <button class="music-toggle-btn" id="music-toggle-btn" onclick="toggleYouTubeMusic()" title="เปิด/ปิด เสียงเพลงบรรยากาศ">
-            <i class="fas fa-music" id="music-icon"></i>
-            <span class="music-label" id="music-label">เล่นเพลงบรรยากาศ</span>
+        <button class="music-toggle-btn" id="music-toggle-btn" onclick="toggleYouTubeMusic()" ontouchstart="toggleYouTubeMusic()" title="เปิด/ปิด เสียงเพลงบรรยากาศ">
+            <i class="fas fa-volume-up" id="music-icon"></i>
+            <span class="music-label" id="music-label">ปิดเสียงเพลงบรรยากาศ</span>
         </button>
     </div>
 
@@ -189,7 +194,7 @@
                 <div class="section-icon"><i class="fas fa-map-marked-alt"></i></div>
                 <h2>LOCATION</h2>
                 <p class="venue-title">สถานที่จัดงาน</p>
-                <p class="venue-name">ณ โโกดังเจ๊ชิง & เฮียฟู่</p>
+                <p class="venue-name">ณ โกดังเจ๊ชิง & เฮียฟู่</p>
                 <p class="venue-desc">ร่วมเป็นเกียรติและสร้างความทรงจำดีๆ ในบรรยากาศอันอบอุ่น</p>
                 
                 <div class="map-action-box">
@@ -283,8 +288,8 @@
 
     </main>
 
-    <!-- Running Cat with Wishes System (แมววิ่ง + ป๊อปอัพคำอวยพร) -->
-    <div id="running-cat-container" class="running-cat-container" onclick="playCatSound()" title="คลิกเพื่อฟังเสียงเหมียว! 🐾">
+    <!-- Running Cat with Wishes System (น้องแมววิ่ง + ป๊อปอัพคำอวยพร) -->
+    <div id="running-cat-container" class="running-cat-container" onclick="playCatSound()" ontouchstart="playCatSound()" title="คลิกเพื่อฟังเสียงเหมียว! 🐾">
         <div class="cat-speech-bubble" id="cat-speech-bubble">
             ยินดีกับพี่วรังค์และพี่ธารินทร์ด้วยนะคะ 💕
         </div>
@@ -303,19 +308,19 @@
         </div>
     </div>
 
-    <!-- Audio Elements -->
+    <!-- Audio Elements for Cat Sound -->
     <audio id="meow-sound" src="meow.mp3.mp3" preload="auto"></audio>
     <audio id="meow-sound-fallback" src="meow.mp3" preload="auto"></audio>
 
     <!-- YouTube IFrame API -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
-    <!-- Inline Fail-Safe Script (เปิดการ์ดได้แน่นอน 100%) -->
+    <!-- Inline Fail-Safe Script (เปิดการ์ดได้แน่นอน 100% ทั้งมือถือและคอม) -->
     <script>
         function openWeddingCard() {
             var overlay = document.getElementById('cover-overlay');
             if (overlay) {
-                overlay.style.classList ? overlay.classList.add('opened') : overlay.style.display = 'none';
+                overlay.classList.add('opened');
                 setTimeout(function() {
                     overlay.style.display = 'none';
                 }, 600);
@@ -324,7 +329,7 @@
                 var controlBar = document.getElementById('audio-control-bar');
                 if (controlBar) controlBar.classList.remove('hidden');
 
-                // Trigger YouTube Autoplay
+                // Trigger YouTube Music Playback
                 if (window.playYouTubeMusic) {
                     window.playYouTubeMusic();
                 }

@@ -11,52 +11,62 @@ var ytPlayer = null;
 var isMusicPlaying = false;
 
 function onYouTubeIframeAPIReady() {
-    ytPlayer = new YT.Player('youtube-player', {
-        height: '0',
-        width: '0',
-        videoId: 'QgaTQ5-XfMM',
-        playerVars: {
-            'autoplay': 0,
-            'controls': 0,
-            'disablekb': 1,
-            'fs': 0,
-            'loop': 1,
-            'playlist': 'QgaTQ5-XfMM',
-            'playsinline': 1,
-            'rel': 0
-        },
-        events: {
-            'onReady': onPlayerReady
-        }
-    });
-}
-
-function onPlayerReady(event) {
-    console.log("YouTube Background Player ready.");
+    try {
+        ytPlayer = new YT.Player('youtube-player-iframe', {
+            events: {
+                'onReady': function() {
+                    console.log("YouTube Player is ready");
+                },
+                'onStateChange': function(event) {
+                    if (event.data === YT.PlayerState.PLAYING) {
+                        isMusicPlaying = true;
+                        updateMusicUI(true);
+                    } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                        isMusicPlaying = false;
+                        updateMusicUI(false);
+                    }
+                }
+            }
+        });
+    } catch(e) {
+        console.log("YT API Init fallback:", e);
+    }
 }
 
 window.playYouTubeMusic = function() {
+    isMusicPlaying = true;
+    updateMusicUI(true);
+
     if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
-        ytPlayer.playVideo();
-        if (typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
-        isMusicPlaying = true;
-        updateMusicUI(true);
+        try {
+            ytPlayer.playVideo();
+            if (typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
+        } catch (e) {
+            console.log("YT Player API play fallback", e);
+        }
+    }
+    
+    // PostMessage fallback for Mobile (iOS Safari / Android Chrome / In-app browsers)
+    var iframe = document.getElementById('youtube-player-iframe');
+    if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
     }
 };
 
 window.toggleYouTubeMusic = function() {
-    if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
-
-    var state = ytPlayer.getPlayerState();
-    if (state === YT.PlayerState.PLAYING) {
-        ytPlayer.pauseVideo();
+    if (isMusicPlaying) {
         isMusicPlaying = false;
         updateMusicUI(false);
+        if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+            try { ytPlayer.pauseVideo(); } catch(e) {}
+        }
+        var iframe = document.getElementById('youtube-player-iframe');
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        }
     } else {
-        ytPlayer.playVideo();
-        if (typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
-        isMusicPlaying = true;
-        updateMusicUI(true);
+        window.playYouTubeMusic();
     }
 };
 
