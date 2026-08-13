@@ -94,26 +94,30 @@ window.playYouTubeMusic = function() {
         }
     }
 window.openWeddingCard = function() {
+    document.body.style.overflow = 'auto';
+    document.body.classList.add('card-opened');
+
     var overlay = document.getElementById('cover-overlay');
     if (overlay) {
+        overlay.classList.add('opened');
         overlay.style.transform = 'translateY(-100%)';
         overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
         
         setTimeout(function() {
             overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }, 800);
+        }, 500);
+    }
 
-        var controlBar = document.getElementById('audio-control-bar');
-        if (controlBar) controlBar.classList.remove('hidden');
+    var controlBar = document.getElementById('audio-control-bar');
+    if (controlBar) controlBar.classList.remove('hidden');
 
-        if (window.playYouTubeMusic) {
-            window.playYouTubeMusic();
-        }
+    if (window.playYouTubeMusic) {
+        try { window.playYouTubeMusic(); } catch(e){}
+    }
 
-        if (window.triggerConfetti) {
-            window.triggerConfetti();
-        }
+    if (window.triggerConfetti) {
+        try { window.triggerConfetti(); } catch(e){}
     }
 };
 

@@ -31,9 +31,9 @@
         <div id="youtube-player-div"></div>
     </div>
 
-    <!-- Cover Overlay / หน้าปกการ์ดแต่งงาน -->
-    <div id="cover-overlay" class="cover-overlay" onclick="openWeddingCard()" ontouchstart="openWeddingCard()">
-        <div class="cover-card" onclick="event.stopPropagation()">
+    <!-- Cover Overlay / หน้าปกการ์ดแต่งงาน (Fail-Safe Direct Trigger) -->
+    <div id="cover-overlay" class="cover-overlay" onclick="openWeddingCard()">
+        <div class="cover-card">
             
             <!-- ข้อความต้อนรับด้านบน -->
             <p class="subtitle">YOU ARE INVITED TO THE WEDDING OF</p>
@@ -53,7 +53,7 @@
             <p class="location-text">ณ โกดังเจ๊ชิง &amp; เฮียฟู่</p>
 
             <!-- ปุ่มกดเปิดการ์ดสไลด์ (Fail-Safe Button) -->
-            <button type="button" class="open-card-btn" onclick="openWeddingCard()" ontouchstart="openWeddingCard()">
+            <button type="button" class="open-card-btn" onclick="openWeddingCard()">
                 <span class="btn-icon">💌</span> OPEN INVITATION • เปิดการ์ด
             </button>
             
@@ -62,7 +62,7 @@
 
     <!-- Sticky Audio Controls Bar -->
     <div class="audio-control-bar hidden" id="audio-control-bar">
-        <button class="music-toggle-btn" id="music-toggle-btn" onclick="toggleYouTubeMusic()" ontouchstart="toggleYouTubeMusic()" title="เปิด/ปิด เสียงเพลงบรรยากาศ">
+        <button class="music-toggle-btn" id="music-toggle-btn" onclick="toggleYouTubeMusic()" title="เปิด/ปิด เสียงเพลงบรรยากาศ">
             <i class="fas fa-volume-up" id="music-icon"></i>
             <span class="music-label" id="music-label">ปิดเสียงเพลงบรรยากาศ</span>
         </button>
@@ -298,7 +298,7 @@
     </main>
 
     <!-- Animated Running 3D White Cat Element (น้องแมวขาว 🐱🤍) -->
-    <div id="catCharacter" class="cat-character" onclick="playCatSound()" ontouchstart="playCatSound()" title="คลิกเพื่อเล่นกับน้องแมวขาว 🐱🤍" aria-label="ตัวการ์ตูนแมวสีขาววิ่งเล่น">
+    <div id="catCharacter" class="cat-character" onclick="playCatSound()" title="คลิกเพื่อเล่นกับน้องแมวขาว 🐱🤍" aria-label="ตัวการ์ตูนแมวสีขาววิ่งเล่น">
         <div class="cat-bubble-wrap">
             <div class="cat-bubble" id="catBubble">ยินดีกับพี่วรังค์และพี่ธารินทร์ด้วยนะคะ 💕</div>
         </div>
@@ -381,29 +381,32 @@
     <!-- Inline Fail-Safe Script -->
     <script>
         function openWeddingCard() {
+            document.body.style.overflow = 'auto';
+            document.body.classList.add('card-opened');
+
             var overlay = document.getElementById('cover-overlay');
             if (overlay) {
-                // ให้หน้าปกค่อยๆ สไลด์ขึ้นด้านบน และเลือนหายอย่างราบรื่น
+                overlay.classList.add('opened');
                 overlay.style.transform = 'translateY(-100%)';
                 overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
                 
                 setTimeout(function() {
                     overlay.style.display = 'none';
-                    document.body.style.overflow = 'auto'; // ปลดล็อกการ Scroll หน้าเว็บหลัก
-                }, 800);
+                }, 500);
+            }
 
-                var controlBar = document.getElementById('audio-control-bar');
-                if (controlBar) controlBar.classList.remove('hidden');
+            var controlBar = document.getElementById('audio-control-bar');
+            if (controlBar) controlBar.classList.remove('hidden');
 
-                // Play Background Music
-                if (window.playYouTubeMusic) {
-                    window.playYouTubeMusic();
-                }
+            // Play Background Music
+            if (window.playYouTubeMusic) {
+                try { window.playYouTubeMusic(); } catch(e){}
+            }
 
-                // Trigger celebration particles
-                if (window.triggerConfetti) {
-                    window.triggerConfetti();
-                }
+            // Trigger celebration particles
+            if (window.triggerConfetti) {
+                try { window.triggerConfetti(); } catch(e){}
             }
         }
 
