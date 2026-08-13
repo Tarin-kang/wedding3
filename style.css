@@ -286,8 +286,9 @@ body {
 }
 
 .header-names {
-    font-family: 'Playfair Display', serif;
-    font-size: 34px;
+    font-family: 'Charm', cursive;
+    font-size: 38px;
+    font-weight: 700;
     color: var(--primary-green);
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -374,6 +375,14 @@ body {
     margin-bottom: 20px;
 }
 
+.timeline-intro-text {
+    font-size: 14px;
+    color: var(--primary-green);
+    margin-bottom: 12px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
 /* Account Number & Copy Box */
 .account-copy-box {
     margin-top: 20px;
@@ -430,19 +439,19 @@ body {
     opacity: 1;
 }
 
-/* Section Card Container */
+/* Section Card Container (Glassmorphism Style) */
 .section {
     margin-bottom: 24px;
 }
 
 .section-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 30px 24px;
     text-align: center;
-    box-shadow: var(--shadow-card);
-    border: 1px solid rgba(230, 235, 228, 0.8);
+    box-shadow: 0 10px 30px rgba(138, 154, 134, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
