@@ -52,202 +52,149 @@ body {
 }
 
 /* Cover Overlay */
+/* Cover Overlay Container */
 .cover-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #f7f9f6;
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(200, 211, 197, 0.3) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(210, 180, 140, 0.2) 0%, transparent 40%);
+    background: linear-gradient(180deg, #f7f9f6 0%, #eef3eb 100%);
     z-index: 999999 !important;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-y: auto;
-    transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s ease;
+    transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
 }
 
 .cover-overlay.opened {
     opacity: 0;
-    transform: scale(1.05);
+    transform: translateY(-100%);
     pointer-events: none;
     visibility: hidden;
 }
 
+/* แผ่นการ์ดหน้าปก */
 .cover-card {
     text-align: center;
-    padding: 40px 24px;
-    max-width: 440px;
-    width: 90%;
+    padding: 35px 24px;
+    max-width: 400px;
+    width: 88%;
     margin: auto;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 28px;
-    box-shadow: 0 15px 35px rgba(74, 85, 72, 0.1);
-    position: relative;
-    overflow: hidden;
-    animation: fadeInScale 1s ease-out;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(138, 154, 134, 0.12);
 }
 
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.92) translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-/* Corner Leaf Decorations */
-.cover-card::before,
-.cover-card::after {
-    content: '';
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 0.15;
-    pointer-events: none;
-}
-
-.cover-card::before {
-    top: 0;
-    left: 0;
-    background-image: radial-gradient(circle at top left, var(--primary-green) 0%, transparent 70%);
-}
-
-.cover-card::after {
-    bottom: 0;
-    right: 0;
-    background-image: radial-gradient(circle at bottom right, var(--sandy-brown) 0%, transparent 70%);
-}
-
+/* Subtitle */
 .subtitle {
     font-family: 'Playfair Display', serif;
-    font-size: 11px;
-    letter-spacing: 2.5px;
-    color: var(--primary-green);
-    margin-bottom: 8px;
-    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #8a9a86;
+    margin-bottom: 6px;
     text-transform: uppercase;
 }
 
+/* ชื่อบ่าวสาว */
 .couple-title {
     font-family: 'Charm', cursive;
-    font-size: 38px;
-    color: var(--text-dark);
-    margin-bottom: 18px;
+    font-size: 34px;
     font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    color: #4a5548;
+    margin-bottom: 18px;
     line-height: 1.2;
 }
 
+/* ซุ้มโค้ง Arch Frame */
 .arch-frame {
-    width: 200px;
+    width: 190px;
     height: 260px;
-    border-radius: 100px 100px 0 0;
-    background-color: #e8eee6;
+    border-radius: 95px 95px 0 0;
+    background-color: #e2e9df;
     margin: 0 auto 22px;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(138, 154, 134, 0.25);
-    border: 3px solid #ffffff;
-    transition: transform 0.4s ease;
-}
-
-.arch-frame:hover {
-    transform: translateY(-4px);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.03);
 }
 
 .cover-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
-}
-
-.arch-frame:hover .cover-img {
-    transform: scale(1.06);
 }
 
 .monogram-logo {
     position: absolute;
     font-family: 'Playfair Display', serif;
     font-size: 42px;
-    color: var(--primary-green);
-    font-weight: bold;
-    letter-spacing: 4px;
-    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.9);
+    color: #8a9a86;
+    font-weight: 600;
+    letter-spacing: 2px;
 }
 
+/* เส้นขอบสีทองซอฟต์รอบซุ้ม */
+.arch-border-line {
+    position: absolute;
+    top: 4px; left: 4px; right: 4px; bottom: 4px;
+    border: 1px solid rgba(210, 180, 140, 0.4);
+    border-radius: 91px 91px 0 0;
+    pointer-events: none;
+}
+
+/* วันที่ & สถานที่ */
 .date-badge {
-    font-size: 13px;
-    letter-spacing: 1.5px;
-    margin-bottom: 6px;
-    color: var(--text-muted);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #6b7769;
+    margin-bottom: 4px;
 }
 
 .location-text {
-    font-size: 15px;
-    margin-bottom: 28px;
-    color: var(--text-dark);
+    font-family: 'Prompt', sans-serif;
+    font-size: 14px;
+    color: #5a6658;
+    margin-bottom: 26px;
     font-weight: 400;
 }
 
-.open-card-btn,
-.capsule-pill-btn {
+/* ปุ่มกดเปิดการ์ดแคปซูลทรงเสน่ห์ */
+.open-card-btn {
     position: relative !important;
     z-index: 1000000 !important;
     pointer-events: auto !important;
-    padding: 14px 36px;
-    background: linear-gradient(135deg, var(--primary-green), #6b7d68);
-    color: #ffffff;
-    border: none;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    cursor: pointer;
-    box-shadow: 0 0 0 0 rgba(138, 154, 134, 0.6);
-    animation: pulsingGlow 2s infinite;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #8a9a86 0%, #768772 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Prompt', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(138, 154, 134, 0.35);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
-@keyframes pulsingGlow {
-    0% {
-        box-shadow: 0 0 0 0 rgba(138, 154, 134, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 16px rgba(138, 154, 134, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(138, 154, 134, 0);
-    }
-}
-
-.capsule-pill-btn:hover,
 .open-card-btn:hover {
-    background: linear-gradient(135deg, #6b7d68, var(--primary-green));
-    transform: translateY(-2px) scale(1.04);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(138, 154, 134, 0.45);
+}
+
+.open-card-btn:active {
+    transform: translateY(0) scale(0.98);
 }
 
 .btn-icon {

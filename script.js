@@ -93,6 +93,28 @@ window.playYouTubeMusic = function() {
             console.log("YT Player play error:", e);
         }
     }
+window.openWeddingCard = function() {
+    var overlay = document.getElementById('cover-overlay');
+    if (overlay) {
+        overlay.style.transform = 'translateY(-100%)';
+        overlay.style.opacity = '0';
+        
+        setTimeout(function() {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }, 800);
+
+        var controlBar = document.getElementById('audio-control-bar');
+        if (controlBar) controlBar.classList.remove('hidden');
+
+        if (window.playYouTubeMusic) {
+            window.playYouTubeMusic();
+        }
+
+        if (window.triggerConfetti) {
+            window.triggerConfetti();
+        }
+    }
 };
 
 window.toggleYouTubeMusic = function() {
