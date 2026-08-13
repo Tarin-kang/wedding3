@@ -26,6 +26,11 @@
     <!-- Falling Petals Canvas -->
     <canvas id="petals-canvas"></canvas>
 
+    <!-- Hidden YouTube Audio Player (A Thousand Years - The Piano Guys) -->
+    <div id="youtube-player-container" style="position: absolute; width: 1px; height: 1px; left: -9999px; overflow: hidden;">
+        <div id="youtube-player"></div>
+    </div>
+
     <!-- Cover Overlay / หน้าปกการ์ด -->
     <div id="cover-overlay" class="cover-overlay" onclick="openWeddingCard()" ontouchstart="openWeddingCard()">
         <div class="cover-card" onclick="event.stopPropagation()">
@@ -52,11 +57,11 @@
         </div>
     </div>
 
-    <!-- Sticky Audio / Controls bar (once opened) -->
+    <!-- Sticky Audio Controls Bar -->
     <div class="audio-control-bar hidden" id="audio-control-bar">
-        <button class="music-toggle-btn" id="music-toggle-btn" title="เปิด/ปิด เสียงเพลงบรรยากาศ">
-            <i class="fas fa-music"></i>
-            <span class="music-label">เพลงบรรยากาศ</span>
+        <button class="music-toggle-btn" id="music-toggle-btn" onclick="toggleYouTubeMusic()" title="เปิด/ปิด เสียงเพลงบรรยากาศ">
+            <i class="fas fa-music" id="music-icon"></i>
+            <span class="music-label" id="music-label">เล่นเพลงบรรยากาศ</span>
         </button>
     </div>
 
@@ -184,7 +189,7 @@
                 <div class="section-icon"><i class="fas fa-map-marked-alt"></i></div>
                 <h2>LOCATION</h2>
                 <p class="venue-title">สถานที่จัดงาน</p>
-                <p class="venue-name">ณ โกดังเจ๊ชิง & เฮียฟู่</p>
+                <p class="venue-name">ณ โโกดังเจ๊ชิง & เฮียฟู่</p>
                 <p class="venue-desc">ร่วมเป็นเกียรติและสร้างความทรงจำดีๆ ในบรรยากาศอันอบอุ่น</p>
                 
                 <div class="map-action-box">
@@ -278,10 +283,14 @@
 
     </main>
 
-    <!-- Cat Interactive Element -->
-    <div id="cat-element" class="cat-element" onclick="playCatSound()" title="คลิกเพื่อฟังเสียงเหมียว! 🐾">
-        <span class="cat-icon">🐱</span>
-        <span class="cat-tooltip">กดเค้าสิ! 🐾</span>
+    <!-- Running Cat with Wishes System (แมววิ่ง + ป๊อปอัพคำอวยพร) -->
+    <div id="running-cat-container" class="running-cat-container" onclick="playCatSound()" title="คลิกเพื่อฟังเสียงเหมียว! 🐾">
+        <div class="cat-speech-bubble" id="cat-speech-bubble">
+            ยินดีกับพี่วรังค์และพี่ธารินทร์ด้วยนะคะ 💕
+        </div>
+        <div class="running-cat-sprite" id="running-cat-sprite">
+            🐱
+        </div>
     </div>
 
     <!-- QR Code Lightbox Modal -->
@@ -298,7 +307,10 @@
     <audio id="meow-sound" src="meow.mp3.mp3" preload="auto"></audio>
     <audio id="meow-sound-fallback" src="meow.mp3" preload="auto"></audio>
 
-    <!-- Inline Fail-Safe Script -->
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- Inline Fail-Safe Script (เปิดการ์ดได้แน่นอน 100%) -->
     <script>
         function openWeddingCard() {
             var overlay = document.getElementById('cover-overlay');
@@ -311,6 +323,11 @@
                 
                 var controlBar = document.getElementById('audio-control-bar');
                 if (controlBar) controlBar.classList.remove('hidden');
+
+                // Trigger YouTube Autoplay
+                if (window.playYouTubeMusic) {
+                    window.playYouTubeMusic();
+                }
 
                 // Trigger celebration particles
                 if (window.triggerConfetti) {
@@ -327,7 +344,6 @@
                 if (playPromise !== undefined) {
                     playPromise.catch(function(e) { 
                         console.log("Audio play issue:", e); 
-                        // Try fallback if main fails
                         var alt = document.getElementById('meow-sound-fallback');
                         if (alt && alt !== catAudio) alt.play().catch(function(){});
                     });
@@ -335,10 +351,10 @@
             }
             
             // Cat bouncing animation effect
-            var catBtn = document.getElementById('cat-element');
-            if (catBtn) {
-                catBtn.classList.add('meow-bounce');
-                setTimeout(function() { catBtn.classList.remove('meow-bounce'); }, 800);
+            var runningCat = document.getElementById('running-cat-sprite');
+            if (runningCat) {
+                runningCat.classList.add('meow-bounce');
+                setTimeout(function() { runningCat.classList.remove('meow-bounce'); }, 800);
             }
         }
     </script>

@@ -2,6 +2,82 @@
  * Warangkana & Tarin Wedding Invitation - Interactive Engine
  */
 
+// --------------------------------------------------------------------------
+// Global YouTube IFrame Player State
+// Video: "Christina Perri - A Thousand Years (Piano & Cello Cover) - The Piano Guys"
+// Video ID: QgaTQ5-XfMM
+// --------------------------------------------------------------------------
+var ytPlayer = null;
+var isMusicPlaying = false;
+
+function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('youtube-player', {
+        height: '0',
+        width: '0',
+        videoId: 'QgaTQ5-XfMM',
+        playerVars: {
+            'autoplay': 0,
+            'controls': 0,
+            'disablekb': 1,
+            'fs': 0,
+            'loop': 1,
+            'playlist': 'QgaTQ5-XfMM',
+            'playsinline': 1,
+            'rel': 0
+        },
+        events: {
+            'onReady': onPlayerReady
+        }
+    });
+}
+
+function onPlayerReady(event) {
+    console.log("YouTube Background Player ready.");
+}
+
+window.playYouTubeMusic = function() {
+    if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+        ytPlayer.playVideo();
+        if (typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
+        isMusicPlaying = true;
+        updateMusicUI(true);
+    }
+};
+
+window.toggleYouTubeMusic = function() {
+    if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+
+    var state = ytPlayer.getPlayerState();
+    if (state === YT.PlayerState.PLAYING) {
+        ytPlayer.pauseVideo();
+        isMusicPlaying = false;
+        updateMusicUI(false);
+    } else {
+        ytPlayer.playVideo();
+        if (typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
+        isMusicPlaying = true;
+        updateMusicUI(true);
+    }
+};
+
+function updateMusicUI(playing) {
+    const musicBtn = document.getElementById('music-toggle-btn');
+    const label = document.getElementById('music-label');
+    const icon = document.getElementById('music-icon');
+
+    if (musicBtn) {
+        if (playing) {
+            musicBtn.classList.add('playing');
+            if (label) label.innerText = 'ปิดเสียงเพลงบรรยากาศ';
+            if (icon) icon.className = 'fas fa-volume-up';
+        } else {
+            musicBtn.classList.remove('playing');
+            if (label) label.innerText = 'เล่นเพลงบรรยากาศ';
+            if (icon) icon.className = 'fas fa-music';
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     
     // --------------------------------------------------------------------------
@@ -29,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (mEl) mEl.innerText = minutes < 10 ? '0' + minutes : minutes;
             if (sEl) sEl.innerText = seconds < 10 ? '0' + seconds : seconds;
         } else {
-            // Event started
             const dEl = document.getElementById('days');
             const hEl = document.getElementById('hours');
             const mEl = document.getElementById('minutes');
@@ -46,25 +121,52 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCountdown();
 
     // --------------------------------------------------------------------------
-    // 2. Falling Petals Canvas Effect
+    // 2. Running Cat Speech Bubble Rotator Engine
+    // --------------------------------------------------------------------------
+    initRunningCatWishes();
+
+    // --------------------------------------------------------------------------
+    // 3. Falling Petals Canvas Effect
     // --------------------------------------------------------------------------
     initFallingPetals();
 
     // --------------------------------------------------------------------------
-    // 3. Scroll Reveal Animation
+    // 4. Scroll Reveal Animation
     // --------------------------------------------------------------------------
     initScrollReveal();
 
     // --------------------------------------------------------------------------
-    // 4. Load Guest Wishes
+    // 5. Load Guest Wishes
     // --------------------------------------------------------------------------
     loadWishes();
-
-    // --------------------------------------------------------------------------
-    // 5. Background Ambient Music Setup
-    // --------------------------------------------------------------------------
-    setupAmbientMusic();
 });
+
+// --------------------------------------------------------------------------
+// Running Cat Wish Rotator Engine
+// --------------------------------------------------------------------------
+function initRunningCatWishes() {
+    const catWishes = [
+        "ยินดีกับพี่วรังค์และพี่ธารินทร์ด้วยนะคะ 💕",
+        "ขอให้ครองรักกันยาวนาน 1000 ปี ✨",
+        "มีความสุขมากๆ สมหวังในทุกเรื่องครับ 🎉",
+        "ขอให้มีเบบี้ไวๆ น้าา 👶",
+        "เจ้าบ่าวเจ้าสาวน่ารักมากๆ ครับ 💖"
+    ];
+
+    let currentWishIndex = 0;
+    const bubbleEl = document.getElementById('cat-speech-bubble');
+
+    if (!bubbleEl) return;
+
+    setInterval(() => {
+        currentWishIndex = (currentWishIndex + 1) % catWishes.length;
+        bubbleEl.style.opacity = '0';
+        setTimeout(() => {
+            bubbleEl.innerText = catWishes[currentWishIndex];
+            bubbleEl.style.opacity = '1';
+        }, 400);
+    }, 4500);
+}
 
 // --------------------------------------------------------------------------
 // Color Swatch Selection Handler
@@ -165,7 +267,6 @@ function submitWish(event) {
     nameInput.value = '';
     msgInput.value = '';
 
-    // Show celebration confetti on wish submit
     if (window.confetti) {
         window.confetti({
             particleCount: 50,
@@ -278,72 +379,4 @@ function initFallingPetals() {
     }
 
     animatePetals();
-}
-
-// --------------------------------------------------------------------------
-// Web Audio API Gentle Ambient Music Generator (No external MP3 required)
-// --------------------------------------------------------------------------
-function setupAmbientMusic() {
-    const musicBtn = document.getElementById('music-toggle-btn');
-    if (!musicBtn) return;
-
-    let audioCtx = null;
-    let isPlaying = false;
-    let intervalId = null;
-
-    musicBtn.addEventListener('click', function() {
-        if (!isPlaying) {
-            startAmbientMusic();
-            musicBtn.classList.add('playing');
-            musicBtn.querySelector('.music-label').innerText = 'ปิดเสียงบรรยากาศ';
-            isPlaying = true;
-        } else {
-            stopAmbientMusic();
-            musicBtn.classList.remove('playing');
-            musicBtn.querySelector('.music-label').innerText = 'เพลงบรรยากาศ';
-            isPlaying = false;
-        }
-    });
-
-    function startAmbientMusic() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-
-        // Play gentle chord arpeggio in C Major / Pentatonic warm tone
-        const notes = [261.63, 329.63, 392.00, 523.25, 659.25]; // C4, E4, G4, C5, E5
-        let noteIndex = 0;
-
-        intervalId = setInterval(() => {
-            playGentleTone(notes[noteIndex % notes.length]);
-            noteIndex++;
-        }, 1200);
-    }
-
-    function playGentleTone(freq) {
-        if (!audioCtx) return;
-
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-        gain.gain.setValueAtTime(0, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2.5);
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        osc.start();
-        osc.stop(audioCtx.currentTime + 2.6);
-    }
-
-    function stopAmbientMusic() {
-        if (intervalId) clearInterval(intervalId);
-    }
 }
