@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warangkana & Tarin Wedding Invitation</title>
+    <meta name="description" content="ขอเชิญร่วมงานมงคลสมรส ระหว่าง วรังคณา & ธารินทร์ วันเสาร์ที่ 12 ธันวาคม 2026 ณ โกดังเจ๊ชิง & เฮียฟู่">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Warangkana & Tarin Wedding Invitation">
+    <meta property="og:description" content="12.12.2026 - ขอเชิญร่วมเป็นเกียรติและฉลองมงคลสมรส Warangkana & Tarin">
+    <meta property="og:image" content="images/cover.jpg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Prompt:wght@300;400;500;600&family=Alex+Brush&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Falling Petals Canvas -->
+    <canvas id="petals-canvas"></canvas>
+
+    <!-- Cover Overlay / หน้าปกการ์ด -->
+    <div id="cover-overlay" class="cover-overlay" onclick="openWeddingCard()" ontouchstart="openWeddingCard()">
+        <div class="cover-card" onclick="event.stopPropagation()">
+            <div class="cover-decoration top-left"></div>
+            <div class="cover-decoration bottom-right"></div>
+            
+            <p class="subtitle">YOU ARE INVITED TO THE WEDDING OF</p>
+            <h1 class="couple-title">Warangkana & Tarin</h1>
+            
+            <div class="arch-frame">
+                <img src="images/cover.jpg" alt="Warangkana & Tarin Cover" class="cover-img" onerror="this.style.display='none'">
+                <div class="monogram-logo">WT</div>
+            </div>
+
+            <div class="date-badge">
+                <i class="far fa-calendar-alt"></i> SATURDAY | 12 DECEMBER 2026
+            </div>
+            <p class="location-text"><i class="fas fa-map-marker-alt"></i> ณ โกดังเจ๊ชิง & เฮียฟู่</p>
+
+            <button type="button" class="open-card-btn" onclick="openWeddingCard()" ontouchstart="openWeddingCard()">
+                <span>เปิดการ์ด OPEN INVITATION</span>
+                <i class="fas fa-envelope-open-text btn-icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Sticky Audio / Controls bar (once opened) -->
+    <div class="audio-control-bar hidden" id="audio-control-bar">
+        <button class="music-toggle-btn" id="music-toggle-btn" title="เปิด/ปิด เสียงเพลงบรรยากาศ">
+            <i class="fas fa-music"></i>
+            <span class="music-label">เพลงบรรยากาศ</span>
+        </button>
+    </div>
+
+    <!-- Main Content / เนื้อหาหลักของการ์ด -->
+    <main class="main-content">
+        
+        <!-- Header Banner section -->
+        <header class="header-section fade-in">
+            <div class="header-ornament"></div>
+            <p class="invite-quote">"Together is a wonderful place to be"</p>
+            <h1 class="header-names">Warangkana & Tarin</h1>
+            <p class="header-th-names">วรังคณา & ธารินทร์</p>
+            <div class="header-divider">
+                <span class="diamond">◆</span>
+            </div>
+        </header>
+
+        <!-- Couple Gallery / Story Section -->
+        <section class="section couple-section fade-in">
+            <div class="section-card">
+                <div class="couple-grid">
+                    <div class="couple-card bride">
+                        <div class="couple-img-wrapper">
+                            <img src="images/couple.jpg" alt="Warangkana" class="couple-photo" onerror="this.src='images/cover_photo.jpg'">
+                        </div>
+                        <h3 class="person-name">Warangkana</h3>
+                        <p class="person-role">เจ้าสาว (Bride)</p>
+                    </div>
+                    <div class="couple-heart">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="couple-card groom">
+                        <div class="couple-img-wrapper">
+                            <img src="images/ภาพแรก.jpg" alt="Tarin" class="couple-photo" onerror="this.src='images/cover.jpg'">
+                        </div>
+                        <h3 class="person-name">Tarin</h3>
+                        <p class="person-role">เจ้าบ่าว (Groom)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Countdown -->
+        <section class="section countdown-section fade-in">
+            <div class="section-card">
+                <div class="section-icon"><i class="far fa-clock"></i></div>
+                <h2>COUNTDOWN TO OUR BIG DAY</h2>
+                <p class="section-sub">นับถอยหลังสู่ช่วงเวลาอันแสนพิเศษของเราสองคน</p>
+                
+                <div id="timer" class="timer-container">
+                    <div class="time-box">
+                        <span id="days">00</span>
+                        <label>DAYS</label>
+                    </div>
+                    <div class="time-box">
+                        <span id="hours">00</span>
+                        <label>HOURS</label>
+                    </div>
+                    <div class="time-box">
+                        <span id="minutes">00</span>
+                        <label>MINS</label>
+                    </div>
+                    <div class="time-box">
+                        <span id="seconds">00</span>
+                        <label>SECS</label>
+                    </div>
+                </div>
+
+                <!-- Calendar Action Button -->
+                <div class="calendar-action">
+                    <button class="add-calendar-btn" onclick="addToCalendar()">
+                        <i class="far fa-calendar-plus"></i> บันทึกลงปฏิทิน (Add to Calendar)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Schedule / Timeline -->
+        <section class="section timeline-section fade-in">
+            <div class="section-card">
+                <div class="section-icon"><i class="fas fa-glass-cheers"></i></div>
+                <h2>EVENT SCHEDULE</h2>
+                <p class="section-sub">กำหนดการวันเสาร์ที่ 12 ธันวาคม 2026</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time-badge"><i class="far fa-clock"></i> 15:00 น.</div>
+                        <div class="timeline-content">
+                            <div class="icon-circle"><i class="fas fa-hands-praying"></i></div>
+                            <div class="desc-box">
+                                <h3>พิธีเจริญพระพุทธมนต์ & พิธีหมั้น</h3>
+                                <p>พิธีสงฆ์ สวดเจริญพระพุทธมนต์ และพิธีหมั้นตามประเพณี</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="time-badge"><i class="far fa-clock"></i> 16:00 น.</div>
+                        <div class="timeline-content">
+                            <div class="icon-circle"><i class="fas fa-hand-holding-water"></i></div>
+                            <div class="desc-box">
+                                <h3>พิธีรดน้ำสังข์</h3>
+                                <p>พิธีหลั่งน้ำพระพุทธมนต์และประสาทพรแก่คู่บ่าวสาว</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="time-badge"><i class="far fa-clock"></i> 17:00 น.</div>
+                        <div class="timeline-content">
+                            <div class="icon-circle"><i class="fas fa-wine-glass-alt"></i></div>
+                            <div class="desc-box">
+                                <h3>ฉลองมงคลสมรส (Chalong)</h3>
+                                <p>ร่วมรับประทานอาหาร สังสรรค์ และฉลองความรักอย่างเป็นกันเอง</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Location -->
+        <section class="section location-section fade-in">
+            <div class="section-card">
+                <div class="section-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <h2>LOCATION</h2>
+                <p class="venue-title">สถานที่จัดงาน</p>
+                <p class="venue-name">ณ โกดังเจ๊ชิง & เฮียฟู่</p>
+                <p class="venue-desc">ร่วมเป็นเกียรติและสร้างความทรงจำดีๆ ในบรรยากาศอันอบอุ่น</p>
+                
+                <div class="map-action-box">
+                    <a href="https://maps.google.com/?q=โกดังเจ๊ชิง" target="_blank" rel="noopener noreferrer" class="map-btn">
+                        <i class="fas fa-directions"></i> นำทางไปยัง Google Maps
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Dress Code -->
+        <section class="section dresscode-section fade-in">
+            <div class="section-card">
+                <div class="section-icon"><i class="fas fa-palette"></i></div>
+                <h2>DRESS CODE</h2>
+                <p class="sub-desc">Earth Tone & Natural Palette</p>
+                <p class="dresscode-hint">ขอความกรุณาแต่งกายด้วยโทนสีธรรมชาติเพื่อให้เข้ากับบรรยากาศงาน</p>
+                
+                <div class="color-swatches">
+                    <div class="swatch" style="background-color: #8A9A86;" data-name="Sage Green" data-hex="#8A9A86" onclick="selectSwatch(this)">
+                        <span class="swatch-check"><i class="fas fa-check"></i></span>
+                    </div>
+                    <div class="swatch" style="background-color: #B5C0B3;" data-name="Soft Sage" data-hex="#B5C0B3" onclick="selectSwatch(this)">
+                        <span class="swatch-check"><i class="fas fa-check"></i></span>
+                    </div>
+                    <div class="swatch" style="background-color: #A3B19B;" data-name="Olive Mist" data-hex="#A3B19B" onclick="selectSwatch(this)">
+                        <span class="swatch-check"><i class="fas fa-check"></i></span>
+                    </div>
+                    <div class="swatch" style="background-color: #C8D3C5;" data-name="Eucalyptus" data-hex="#C8D3C5" onclick="selectSwatch(this)">
+                        <span class="swatch-check"><i class="fas fa-check"></i></span>
+                    </div>
+                    <div class="swatch" style="background-color: #D2B48C;" data-name="Sandy Brown" data-hex="#D2B48C" onclick="selectSwatch(this)">
+                        <span class="swatch-check"><i class="fas fa-check"></i></span>
+                    </div>
+                </div>
+
+                <div id="swatch-info" class="swatch-info">
+                    <span id="swatch-name">คลิกที่แถบสีเพื่อดูชื่อสี</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Gifting -->
+        <section class="section gifting-section fade-in">
+            <div class="section-card">
+                <div class="section-icon"><i class="fas fa-gift"></i></div>
+                <h2>WEDDING GIFT</h2>
+                <p class="gift-subtitle">ร่วมอวยพรและแสดงความยินดีผ่าน PromptPay</p>
+                <p class="gift-desc">คำอวยพรและความปรารถนาดีของท่านคือของขวัญอันมีค่าที่สุดสำหรับเรา</p>
+                
+                <div class="qr-container" onclick="openQrModal()">
+                    <img src="images/qr_code.jpg" alt="PromptPay QR Code" class="clean-qr" onerror="this.alt='กรุณาใส่รูป images/qr_code.jpg'">
+                    <div class="qr-overlay-hint">
+                        <i class="fas fa-search-plus"></i> แตะเพื่อขยาย QR Code
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Guest Wishes / Interactive Guestbook -->
+        <section class="section wishes-section fade-in">
+            <div class="section-card">
+                <div class="section-icon"><i class="fas fa-comment-heart"></i></div>
+                <h2>BEST WISHES</h2>
+                <p class="section-sub">ส่งคำอวยพรให้คู่บ่าวสาว</p>
+                
+                <form id="wish-form" class="wish-form" onsubmit="submitWish(event)">
+                    <div class="form-group">
+                        <input type="text" id="guest-name" placeholder="ชื่อของคุณ (Your Name)" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="guest-message" rows="3" placeholder="เขียนคำอวยพรต้อนรับบ่าวสาว..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-wish-btn">
+                        <i class="fas fa-paper-plane"></i> ส่งคำอวยพร (Send Wishes)
+                    </button>
+                </form>
+
+                <div id="wishes-list" class="wishes-list">
+                    <!-- Dynamic wishes loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="wedding-footer">
+            <p class="thank-you">Thank You For Sharing Our Special Day</p>
+            <p class="footer-names">Warangkana & Tarin</p>
+            <p class="footer-date">12 . 12 . 2026</p>
+        </footer>
+
+    </main>
+
+    <!-- Cat Interactive Element -->
+    <div id="cat-element" class="cat-element" onclick="playCatSound()" title="คลิกเพื่อฟังเสียงเหมียว! 🐾">
+        <span class="cat-icon">🐱</span>
+        <span class="cat-tooltip">กดเค้าสิ! 🐾</span>
+    </div>
+
+    <!-- QR Code Lightbox Modal -->
+    <div id="qr-modal" class="qr-modal" onclick="closeQrModal()">
+        <div class="qr-modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeQrModal()">&times;</span>
+            <h3>PromptPay QR Code</h3>
+            <img src="images/qr_code.jpg" alt="PromptPay QR Code Enlarged" class="modal-qr-img">
+            <p>แตะค้างที่รูปเพื่อบันทึก QR Code</p>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="meow-sound" src="meow.mp3.mp3" preload="auto"></audio>
+    <audio id="meow-sound-fallback" src="meow.mp3" preload="auto"></audio>
+
+    <!-- Inline Fail-Safe Script -->
+    <script>
+        function openWeddingCard() {
+            var overlay = document.getElementById('cover-overlay');
+            if (overlay) {
+                overlay.style.classList ? overlay.classList.add('opened') : overlay.style.display = 'none';
+                setTimeout(function() {
+                    overlay.style.display = 'none';
+                }, 600);
+                document.body.style.overflow = 'auto';
+                
+                var controlBar = document.getElementById('audio-control-bar');
+                if (controlBar) controlBar.classList.remove('hidden');
+
+                // Trigger celebration particles
+                if (window.triggerConfetti) {
+                    window.triggerConfetti();
+                }
+            }
+        }
+
+        function playCatSound() {
+            var catAudio = document.getElementById('meow-sound') || document.getElementById('meow-sound-fallback');
+            if (catAudio) {
+                catAudio.currentTime = 0;
+                var playPromise = catAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(e) { 
+                        console.log("Audio play issue:", e); 
+                        // Try fallback if main fails
+                        var alt = document.getElementById('meow-sound-fallback');
+                        if (alt && alt !== catAudio) alt.play().catch(function(){});
+                    });
+                }
+            }
+            
+            // Cat bouncing animation effect
+            var catBtn = document.getElementById('cat-element');
+            if (catBtn) {
+                catBtn.classList.add('meow-bounce');
+                setTimeout(function() { catBtn.classList.remove('meow-bounce'); }, 800);
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
