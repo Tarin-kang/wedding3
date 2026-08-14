@@ -129,20 +129,41 @@ window.toggleYouTubeMusic = function() {
     }
 };
 
+let isPetalsActive = true;
+
+window.toggleFallingPetals = function() {
+    isPetalsActive = !isPetalsActive;
+    const canvas = document.getElementById('petalsCanvas') || document.getElementById('petals-canvas');
+    const petalsBtn = document.getElementById('petals-toggle-btn');
+    
+    if (canvas) {
+        canvas.style.display = isPetalsActive ? 'block' : 'none';
+    }
+    
+    if (petalsBtn) {
+        if (isPetalsActive) {
+            petalsBtn.classList.add('active');
+            petalsBtn.title = 'ปิดเอฟเฟกต์กลีบดอกไม้ 🌸';
+        } else {
+            petalsBtn.classList.remove('active');
+            petalsBtn.title = 'เปิดเอฟเฟกต์กลีบดอกไม้ 🌸';
+        }
+    }
+};
+
 function updateMusicUI(playing) {
     const musicBtn = document.getElementById('music-toggle-btn');
-    const label = document.getElementById('music-label');
     const icon = document.getElementById('music-icon');
 
     if (musicBtn) {
         if (playing) {
-            musicBtn.classList.add('playing');
-            if (label) label.innerText = 'ปิดเสียงเพลงบรรยากาศ';
-            if (icon) icon.className = 'fas fa-volume-up';
+            musicBtn.classList.add('playing', 'active');
+            musicBtn.title = 'ปิดเพลงบรรยากาศ 🎵';
+            if (icon) icon.innerText = '🎶';
         } else {
-            musicBtn.classList.remove('playing');
-            if (label) label.innerText = 'เล่นเพลงบรรยากาศ';
-            if (icon) icon.className = 'fas fa-music';
+            musicBtn.classList.remove('playing', 'active');
+            musicBtn.title = 'เปิดเพลงบรรยากาศ 🎵';
+            if (icon) icon.innerText = '🎵';
         }
     }
 }

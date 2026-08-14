@@ -60,11 +60,18 @@
         </div>
     </div>
 
-    <!-- Sticky Audio Controls Bar -->
-    <div class="audio-control-bar hidden" id="audio-control-bar">
-        <button class="music-toggle-btn" id="music-toggle-btn" onclick="toggleYouTubeMusic()" title="เปิด/ปิด เสียงเพลงบรรยากาศ">
-            <i class="fas fa-volume-up" id="music-icon"></i>
-            <span class="music-label" id="music-label">ปิดเสียงเพลงบรรยากาศ</span>
+    <!-- Floating Interactive Action Controls (Bottom-Right Corner) -->
+    <div class="floating-controls-wrap" id="floating-controls">
+        <!-- Floating Music Toggle Button 🎵 -->
+        <button type="button" class="floating-btn music-float-btn" id="music-toggle-btn" onclick="toggleYouTubeMusic()" title="เปิด/ปิด เสียงเพลงบรรยากาศ 🎵" aria-label="เปิด/ปิด เสียงเพลงบรรยากาศ 🎵">
+            <span class="float-btn-icon" id="music-icon">🎵</span>
+            <span class="float-tooltip">เพลงบรรยากาศ 🎵</span>
+        </button>
+        
+        <!-- Floating Petals Toggle Button 🌸 -->
+        <button type="button" class="floating-btn petals-float-btn active" id="petals-toggle-btn" onclick="toggleFallingPetals()" title="เปิด/ปิด เอฟเฟกต์กลีบดอกไม้ 🌸" aria-label="เปิด/ปิด เอฟเฟกต์กลีบดอกไม้ 🌸">
+            <span class="float-btn-icon">🌸</span>
+            <span class="float-tooltip">กลีบดอกไม้ 🌸</span>
         </button>
     </div>
 

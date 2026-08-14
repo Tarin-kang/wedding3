@@ -252,50 +252,79 @@ body.card-opened {
     opacity: 0.85;
 }
 
-/* Audio Control Floating Bar */
-.audio-control-bar {
+/* Floating Action Controls (Bottom-Right Corner) */
+.floating-controls-wrap {
     position: fixed;
-    top: 20px;
+    bottom: 24px;
     right: 20px;
-    z-index: 999;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
 }
 
-.audio-control-bar.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-10px);
-}
-
-.music-toggle-btn {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(138, 154, 134, 0.3);
+.floating-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(122, 154, 131, 0.4);
     color: var(--primary-green);
-    padding: 8px 16px;
-    border-radius: 30px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
+    font-size: 20px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(21, 36, 25, 0.15);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-.music-toggle-btn:hover {
+.floating-btn:hover {
+    transform: scale(1.12);
     background: var(--primary-green);
-    color: var(--white);
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(75, 104, 84, 0.25);
 }
 
-.music-toggle-btn.playing i {
-    animation: spinMusic 3s linear infinite;
+.floating-btn.active {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(122, 154, 131, 0.3);
 }
 
-@keyframes spinMusic {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.floating-btn.playing .float-btn-icon {
+    animation: floatIconPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes floatIconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+}
+
+.float-tooltip {
+    position: absolute;
+    right: 58px;
+    background: rgba(21, 36, 25, 0.88);
+    color: #ffffff;
+    font-family: 'Prompt', sans-serif;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(6px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.floating-btn:hover .float-tooltip {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 /* Sections & Main Container */
