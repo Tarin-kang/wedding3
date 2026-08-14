@@ -176,6 +176,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const targetDate = new Date('2026-12-12T15:00:00').getTime();
 
     function updateCountdown() {
+        const dEl = document.getElementById('days');
+        const hEl = document.getElementById('hours');
+        const mEl = document.getElementById('minutes');
+        const sEl = document.getElementById('seconds');
+
+        if (!dEl && !hEl && !mEl && !sEl) return;
+
         const now = new Date().getTime();
         const difference = targetDate - now;
 
@@ -185,21 +192,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            const dEl = document.getElementById('days');
-            const hEl = document.getElementById('hours');
-            const mEl = document.getElementById('minutes');
-            const sEl = document.getElementById('seconds');
-
             if (dEl) dEl.innerText = days < 10 ? '0' + days : days;
             if (hEl) hEl.innerText = hours < 10 ? '0' + hours : hours;
             if (mEl) mEl.innerText = minutes < 10 ? '0' + minutes : minutes;
             if (sEl) sEl.innerText = seconds < 10 ? '0' + seconds : seconds;
         } else {
-            const dEl = document.getElementById('days');
-            const hEl = document.getElementById('hours');
-            const mEl = document.getElementById('minutes');
-            const sEl = document.getElementById('seconds');
-
             if (dEl) dEl.innerText = '00';
             if (hEl) hEl.innerText = '00';
             if (mEl) mEl.innerText = '00';
