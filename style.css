@@ -145,12 +145,13 @@ body.card-opened {
 
 /* ชื่อบ่าวสาว */
 .couple-title {
-    font-family: 'Charm', cursive;
-    font-size: 34px;
+    font-family: 'Charm', 'Alex Brush', cursive;
+    font-size: 46px;
     font-weight: 700;
     color: #4a5548;
     margin-bottom: 18px;
     line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(122, 154, 131, 0.15);
 }
 
 /* ซุ้มโค้ง Arch Frame */
@@ -194,8 +195,8 @@ body.card-opened {
 
 /* วันที่ & สถานที่ */
 .date-badge {
-    font-family: 'Playfair Display', serif;
-    font-size: 12px;
+    font-family: 'Playfair Display', 'Prompt', serif;
+    font-size: 13px;
     letter-spacing: 2px;
     color: #6b7769;
     margin-bottom: 4px;
@@ -203,10 +204,10 @@ body.card-opened {
 
 .location-text {
     font-family: 'Prompt', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     color: #5a6658;
     margin-bottom: 26px;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 /* ปุ่มกดเปิดการ์ดแคปซูลทรงเสน่ห์ */
@@ -218,13 +219,13 @@ body.card-opened {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 14px 32px;
+    padding: 14px 34px;
     background: linear-gradient(135deg, #8a9a86 0%, #768772 100%);
     color: #ffffff;
     border: none;
     border-radius: 50px;
     font-family: 'Prompt', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     letter-spacing: 1px;
     cursor: pointer;
@@ -347,7 +348,7 @@ body.card-opened {
 
 .save-the-date-badge {
     font-family: 'Playfair Display', serif;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 4px;
     color: var(--gold-accent);
     font-weight: 700;
@@ -363,25 +364,25 @@ body.card-opened {
 
 .header-names-cursive {
     font-family: 'Alex Brush', 'Charm', cursive;
-    font-size: 64px;
+    font-size: 68px;
     color: var(--primary-green);
-    line-height: 1.1;
-    margin: 16px 0 22px;
+    line-height: 1.05;
+    margin: 18px 0 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-shadow: 0 2px 10px rgba(122, 154, 131, 0.15);
+    text-shadow: 0 3px 12px rgba(122, 154, 131, 0.2);
 }
 
 .header-names-cursive .name-line {
     font-family: 'Alex Brush', 'Charm', cursive;
-    font-size: 64px;
+    font-size: 68px;
     font-weight: 700;
 }
 
 .header-names-cursive .ampersand-line {
     font-family: 'Alex Brush', 'Charm', cursive;
-    font-size: 42px;
+    font-size: 46px;
     color: var(--sandy-brown);
     margin: 2px 0;
 }
@@ -409,14 +410,14 @@ body.card-opened {
 
 /* Pre-wedding Frame (#preweddingImg) */
 .prewedding-frame {
-    width: 240px;
-    height: 310px;
+    width: 270px;
+    height: 350px;
     margin: 24px auto 0;
-    border-radius: 120px 120px 20px 20px;
+    border-radius: 135px 135px 24px 24px;
     overflow: hidden;
     position: relative;
-    border: 4px solid var(--white);
-    box-shadow: 0 12px 32px rgba(74, 85, 72, 0.15);
+    border: 5px solid var(--white);
+    box-shadow: 0 14px 38px rgba(74, 85, 72, 0.18);
     background-color: #e8eee6;
 }
 
